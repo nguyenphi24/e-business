@@ -25,7 +25,19 @@ Mỗi project có `README.md` (chạy local), `AGENTS.md` và `.ai/` (bối cả
 
 ## Chạy demo local
 
-Yêu cầu: Docker, Python 3.11 (pyenv), Node 22 (nvm), Google Chrome để xem giao diện.
+Yêu cầu: Docker Desktop (đang chạy), Python 3.11+ (khuyến nghị pyenv `3.11.15`), Node 22+ (khuyến nghị nvm `22.23.2`).
+
+### Cách nhanh
+
+```bash
+./run.local.sh          # kiểm tra môi trường → cài phụ thuộc còn thiếu → bật PostgreSQL, backend, frontend, sandbox-service
+./run.local.sh check    # chỉ kiểm tra và cài, không khởi động
+./run.local.sh stop     # tắt các tiến trình đã bật (từ terminal khác); hoặc Ctrl+C ở terminal đang chạy
+```
+
+Script kiểm tra Python và Node cài sẵn trên máy trước, không đủ phiên bản thì tìm pyenv/nvm; tạo `.venv311` (ưu tiên pyenv `3.11.15`) và `node_modules` khi thiếu hoặc khi `requirements`/`package-lock.json` đổi; lần đầu tạo hai file `.env` với secret ngẫu nhiên, dùng chung `SANDBOX_API_KEY`/`SANDBOX_WEBHOOK_SECRET`; nạp dữ liệu demo nếu database trống. Log nằm ở `.run/logs/`. Script không tự tắt tiến trình lạ đang chiếm cổng — báo ra để bạn xử lý.
+
+### Từng bước (thủ công)
 
 | Thành phần | Cổng |
 |---|---|

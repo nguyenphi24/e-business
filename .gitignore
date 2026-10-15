@@ -23,3 +23,6 @@ sandbox-service/data/
 # Hệ điều hành / Office
 .DS_Store
 ~$*
+
+# Script chạy local (pid, log)
+.run/
