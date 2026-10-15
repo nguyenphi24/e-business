@@ -374,6 +374,48 @@ class RFQViewSet(viewsets.ModelViewSet):
             audit(request.user, "RFQ_INVITATIONS_UPDATED", rfq, {"added": len(new_ids)})
         return Response(RFQSerializer(rfq, context={"request": request}).data)
 
+    def retrieve(self, request, *args, **kwargs):
+        rfq = self.get_object()
+        if has_any_role(request.user, "SUPPLIER") and request.user.company_id:
+            # NCC mở RFQ lần đầu: ghi nhận "đã xem" để bên mua theo dõi tiến độ phản hồi.
+            RFQInvitation.objects.filter(
+                rfq=rfq, supplier_company_id=request.user.company_id, status=RFQInvitation.Status.INVITED
+            ).update(status=RFQInvitation.Status.VIEWED, viewed_at=timezone.now(), updated_at=timezone.now())
+        return Response(self.get_serializer(rfq).data)
+
+    def _respond_invitation(self, request, pk, accept):
+        if not has_any_role(request.user, "SUPPLIER"):
+            raise DomainError("permission_denied", "Only invited suppliers can respond to an invitation.", status_code=403)
+        reason = str(request.data.get("reason", "")).strip()
+        if not accept and not reason:
+            raise DomainError("validation_error", "Decline reason is required.", status_code=422, field_errors={"reason": ["This field is required."]})
+        with transaction.atomic():
+            rfq = self.get_object()
+            invitation = get_object_or_404(
+                RFQInvitation.objects.select_for_update(), rfq=rfq, supplier_company_id=request.user.company_id
+            )
+            if rfq.status != RFQ.Status.OPEN or rfq.deadline <= timezone.now():
+                raise DomainError("deadline_passed", "The RFQ is no longer open.")
+            if invitation.status not in {RFQInvitation.Status.INVITED, RFQInvitation.Status.VIEWED}:
+                raise DomainError("invalid_transition", "This invitation has already been answered.")
+            invitation.status = RFQInvitation.Status.ACCEPTED if accept else RFQInvitation.Status.DECLINED
+            invitation.responded_at = timezone.now()
+            invitation.viewed_at = invitation.viewed_at or invitation.responded_at
+            invitation.decline_reason = "" if accept else reason
+            invitation.save(update_fields=["status", "responded_at", "viewed_at", "decline_reason", "updated_at"])
+            event = "INVITATION_ACCEPTED" if accept else "INVITATION_DECLINED"
+            audit(request.user, event, rfq, {"supplier_company_id": str(request.user.company_id), "reason": invitation.decline_reason})
+            notify_event(event, invitation, actor=request.user)
+        return Response(RFQSerializer(rfq, context={"request": request}).data)
+
+    @action(detail=True, methods=["post"], url_path="accept-invitation")
+    def accept_invitation(self, request, pk=None):
+        return self._respond_invitation(request, pk, accept=True)
+
+    @action(detail=True, methods=["post"], url_path="decline-invitation")
+    def decline_invitation(self, request, pk=None):
+        return self._respond_invitation(request, pk, accept=False)
+
     @action(detail=True, methods=["post"], url_path="scoring-weights")
     def scoring_weights(self, request, pk=None):
         weights = validated_weights_or_422(request.data.get("scoring_weights", request.data))
@@ -440,9 +482,12 @@ class RFQViewSet(viewsets.ModelViewSet):
                     for rfq_line in rfq_lines
                 ]
             )
-            invitation.status = RFQInvitation.Status.VIEWED
-            invitation.viewed_at = timezone.now()
-            invitation.save(update_fields=["status", "viewed_at", "updated_at"])
+            # Gửi báo giá đồng nghĩa với tham gia; lời mời chưa xác nhận được coi là đã xác nhận.
+            if invitation.status in {RFQInvitation.Status.INVITED, RFQInvitation.Status.VIEWED}:
+                invitation.status = RFQInvitation.Status.ACCEPTED
+                invitation.responded_at = timezone.now()
+                invitation.viewed_at = invitation.viewed_at or invitation.responded_at
+                invitation.save(update_fields=["status", "responded_at", "viewed_at", "updated_at"])
             audit(request.user, "QUOTATION_CREATED", quotation)
         return Response(QuotationSerializer(quotation, context={"request": request}).data, status=status.HTTP_201_CREATED)
 

@@ -19,6 +19,7 @@
 - [x] E. Đánh giá NCC, ngân sách PR, KPI dashboard.
 - [x] F. Seed, frontend (chuông thông báo, bảng điểm, trang Hóa đơn, đánh giá, KPI), tài liệu, smoke test.
 - [x] G. Tích hợp `../sandbox-service` (15/10/2026): cổng thanh toán (redirect + IPN), hóa đơn điện tử + VAT 10%, ký số báo giá (OTP, xác minh Ed25519, phát hiện sửa dữ liệu). 47 test pass trên SQLite và PostgreSQL; chạy luồng thật qua HTTP.
+- [x] H. Kịch bản demo (15/10/2026): NCC xác nhận/từ chối lời mời (`ACCEPTED`/`DECLINED`, thông báo Buyer), seed tên người dùng thật, `seed_sandbox` cho sandbox-service, `run.local.sh reset`. 51 test pass.
 - [ ] Ký số PO và hóa đơn; tự thử lại callback bị lỡ.
 - [ ] Xác nhận có đổi cổng local sang dải `20000–29999` theo chuẩn chung không.
 - [ ] Global response envelope, `RequestLoggingMiddleware`, `/metrics` theo `stacks/django.md`.

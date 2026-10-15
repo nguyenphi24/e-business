@@ -36,6 +36,8 @@ class WebhookMixin:
 
 @override_settings(**SANDBOX)
 class PaymentGatewayTests(WebhookMixin, ProcurementFlowMixin, APITestCase):
+    SANDBOX_IN_TEST = True
+
     def setUp(self):
         self.setUpFlow()
         self.as_user(self.tech_sales)
@@ -89,6 +91,8 @@ def einvoice_data(status_value, **extra):
 
 @override_settings(**SANDBOX)
 class EInvoiceTests(WebhookMixin, ProcurementFlowMixin, APITestCase):
+    SANDBOX_IN_TEST = True
+
     def setUp(self):
         self.setUpFlow()
         self.po = self.delivered_po()
@@ -139,6 +143,8 @@ class EInvoiceTests(WebhookMixin, ProcurementFlowMixin, APITestCase):
 
 @override_settings(**SANDBOX)
 class QuotationSignatureTests(WebhookMixin, ProcurementFlowMixin, APITestCase):
+    SANDBOX_IN_TEST = True
+
     def setUp(self):
         self.setUpFlow()
         self.ca_key = Ed25519PrivateKey.generate()

@@ -74,7 +74,7 @@ export type RFQ = {
   scoring_weights: ScoringWeights;
   published_at: string | null;
   lines: RFQLine[];
-  invitations: Array<{ id: string; supplier_company: string; supplier: { legal_name: string }; status: string }>;
+  invitations: Array<{ id: string; supplier_company: string; supplier: { legal_name: string }; status: string; viewed_at: string | null; responded_at: string | null; decline_reason: string }>;
 };
 export type QuotationSignature = {
   state: "UNSIGNED" | "PENDING" | "VALID" | "INVALID" | "REJECTED" | "FAILED" | "UNVERIFIABLE";
@@ -210,17 +210,30 @@ async function fetchWithAuth<T>(path: string, options: RequestInit, allowRefresh
   const response = await fetch(`${API_URL}${path}`, { ...options, headers, credentials: "include" });
   const payload = await response.json().catch(() => ({}));
   if (response.status === 401 && allowRefresh && !path.startsWith("/auth/") && typeof window !== "undefined") {
-    const refreshed = await fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" });
-    if (refreshed.ok) {
-      const refreshPayload = (await refreshed.json()) as { access: string };
-      accessToken = refreshPayload.access;
-      return fetchWithAuth<T>(path, options, false);
-    }
+    if (await refreshAccessToken()) return fetchWithAuth<T>(path, options, false);
   }
   if (!response.ok) {
     throw new ApiError(response.status, payload.message ?? "Có lỗi xảy ra.", payload.code);
   }
   return payload as T;
+}
+
+let refreshInFlight: Promise<string | null> | null = null;
+
+/**
+ * Gọi /auth/refresh một lần cho mọi request đang chờ. Refresh token xoay vòng sau mỗi lần dùng,
+ * nên nhiều lời gọi song song (ví dụ ngay sau F5) sẽ làm các lời gọi sau bị 401.
+ */
+function refreshAccessToken(): Promise<string | null> {
+  refreshInFlight ??= fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" })
+    .then(async (refreshed) => {
+      if (!refreshed.ok) return null;
+      accessToken = ((await refreshed.json()) as { access: string }).access;
+      return accessToken;
+    })
+    .catch(() => null)
+    .finally(() => { refreshInFlight = null; });
+  return refreshInFlight;
 }
 
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -230,10 +243,9 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 /** Lấy access token trong bộ nhớ; nếu chưa có (vừa tải lại trang) thì khôi phục qua refresh cookie. */
 export async function ensureAccessToken(force = false): Promise<string> {
   if (accessToken && !force) return accessToken;
-  const refreshed = await fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" });
-  if (!refreshed.ok) throw new ApiError(401, "Phiên đăng nhập đã hết hạn.", "authentication_required");
-  accessToken = ((await refreshed.json()) as { access: string }).access;
-  return accessToken;
+  const token = await refreshAccessToken();
+  if (!token) throw new ApiError(401, "Phiên đăng nhập đã hết hạn.", "authentication_required");
+  return token;
 }
 
 /**

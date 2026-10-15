@@ -107,7 +107,7 @@ class RFQInvitationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RFQInvitation
-        fields = ["id", "supplier_company", "supplier", "status", "viewed_at", "created_at"]
+        fields = ["id", "supplier_company", "supplier", "status", "viewed_at", "responded_at", "decline_reason", "created_at"]
 
     def get_supplier(self, invitation):
         return {

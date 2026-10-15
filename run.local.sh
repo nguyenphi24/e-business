@@ -2,6 +2,7 @@
 # Chạy toàn bộ demo ở máy dev: PostgreSQL (Docker) → ProcureHub backend → frontend → sandbox-service.
 #
 #   ./run.local.sh          kiểm tra môi trường, cài phụ thuộc còn thiếu, khởi động, Ctrl+C để tắt hết
+#   ./run.local.sh reset    như trên nhưng làm mới dữ liệu demo cả hai bên trước (dùng trước mỗi buổi demo)
 #   ./run.local.sh check    chỉ kiểm tra môi trường, không khởi động
 #   ./run.local.sh stop     tắt các tiến trình do script này khởi động (container PostgreSQL giữ nguyên)
 #
@@ -23,6 +24,7 @@ PG_PORT=45432
 BE_PORT=48000
 FE_PORT=43000
 SBX_PORT=28080
+RESET_DATA=0
 
 if [[ -t 1 ]]; then
 	BOLD=$'\033[1m'; GREEN=$'\033[32m'; YELLOW=$'\033[33m'; RED=$'\033[31m'; RESET=$'\033[0m'
@@ -263,7 +265,11 @@ start_backend() {
 		|| { tail -n 20 "$LOG_DIR/migrate-procurehub.log" >&2; die "migrate thất bại"; }
 	ok "migrate xong"
 	local seed_out
-	if seed_out="$(cd "$PH_DIR/backend" && "$py" manage.py seed_demo 2>&1)"; then
+	if [[ $RESET_DATA -eq 1 ]]; then
+		( cd "$PH_DIR/backend" && "$py" manage.py seed_demo --reset ) >"$LOG_DIR/seed-procurehub.log" 2>&1 \
+			|| { tail -n 20 "$LOG_DIR/seed-procurehub.log" >&2; die "seed_demo --reset thất bại"; }
+		ok "đã làm mới dữ liệu demo (tài khoản: xem $LOG_DIR/seed-procurehub.log)"
+	elif seed_out="$(cd "$PH_DIR/backend" && "$py" manage.py seed_demo 2>&1)"; then
 		ok "nạp dữ liệu demo lần đầu"
 	elif grep -q "đã có dữ liệu" <<<"$seed_out"; then
 		ok "dữ liệu demo đã có sẵn (giữ nguyên; muốn làm lại: manage.py seed_demo --reset)"
@@ -286,6 +292,11 @@ start_sandbox() {
 	( cd "$SBX_DIR/backend" && "$py" manage.py migrate --noinput ) >"$LOG_DIR/migrate-sandbox.log" 2>&1 \
 		|| { tail -n 20 "$LOG_DIR/migrate-sandbox.log" >&2; die "migrate sandbox thất bại"; }
 	ok "migrate xong"
+	local seed_args=()
+	[[ $RESET_DATA -eq 1 ]] && seed_args=(--reset)
+	( cd "$SBX_DIR/backend" && "$py" manage.py seed_sandbox ${seed_args[@]+"${seed_args[@]}"} ) >"$LOG_DIR/seed-sandbox.log" 2>&1 \
+		|| { tail -n 20 "$LOG_DIR/seed-sandbox.log" >&2; die "seed_sandbox thất bại"; }
+	if [[ $RESET_DATA -eq 1 ]]; then ok "đã xóa giao dịch/hóa đơn/yêu cầu ký cũ; CA và chứng thư 2 NCC sẵn sàng"; else ok "CA và chứng thư 2 NCC sẵn sàng"; fi
 	start_bg sandbox "$SBX_DIR/backend" "$py" manage.py runserver "127.0.0.1:$SBX_PORT"
 	wait_http sandbox "http://127.0.0.1:$SBX_PORT/health/" 60
 }
@@ -312,7 +323,8 @@ main() {
 		check)
 			prepare; step "Môi trường sẵn sàng"; exit 0 ;;
 		start) ;;
-		*) echo "Dùng: $0 [start|check|stop]" >&2; exit 2 ;;
+		reset) RESET_DATA=1 ;;
+		*) echo "Dùng: $0 [start|reset|check|stop]" >&2; exit 2 ;;
 	esac
 
 	prepare

@@ -3,6 +3,7 @@ import uuid
 from datetime import date, timedelta
 from decimal import Decimal
 
+from django.test import override_settings
 from django.utils import timezone
 from rest_framework import status
 
@@ -11,7 +12,15 @@ from apps.suppliers.models import SupplierRelationship
 
 
 class ProcurementFlowMixin:
+    # .env ở máy dev có thể bật SANDBOX_BASE_URL; test mặc định tắt tích hợp để không gọi mạng thật.
+    # Lớp test tích hợp đặt True và tự override SANDBOX_BASE_URL tới địa chỉ giả (có mock).
+    SANDBOX_IN_TEST = False
+
     def setUpFlow(self):
+        if not self.SANDBOX_IN_TEST:
+            sandbox_off = override_settings(SANDBOX_BASE_URL="", SANDBOX_API_KEY="")
+            sandbox_off.enable()
+            self.addCleanup(sandbox_off.disable)
         self.buyer_company = Company.objects.create(legal_name="Buyer Co", tax_code="3000000001", company_type=Company.CompanyType.BUYER)
         self.other_company = Company.objects.create(legal_name="Other Co", tax_code="3000000009", company_type=Company.CompanyType.BUYER)
         self.tech = Company.objects.create(legal_name="Tech Co", tax_code="3000000002", company_type=Company.CompanyType.SUPPLIER)

@@ -12,7 +12,7 @@ sandbox-service đứng ở vị trí "hệ thống bên ngoài" trong kiến tr
 
 ## Trạng thái
 
-- 13 test tự động pass (`manage.py test`).
+- 15 test tự động pass (`manage.py test`).
 - Đã chạy luồng thật cùng ProcureHub qua HTTP: thanh toán 30% rồi phần còn lại qua cổng, IPN gửi lại không cộng tiền hai lần; hóa đơn điện tử chờ ~3 giây rồi được cấp mã và tra cứu được; ký OTP rồi ProcureHub xác minh chữ ký, phát hiện được dữ liệu báo giá bị sửa.
 - Đã build image và chạy container local với named volume `/data`: health OK, thiếu secret thì dừng. Chưa triển khai lên server thật.
 

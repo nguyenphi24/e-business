@@ -71,6 +71,7 @@ Các yêu cầu chi tiết cho những chức năng mở rộng:
 | FR-RFQ-07 | RFQ có `scoring_weights` gồm 4 tiêu chí `price`, `delivery`, `rating`, `payment_terms`; mặc định 45/25/20/10; nhận khi tạo RFQ hoặc qua endpoint riêng. | P0 |
 | FR-RFQ-08 | Trọng số là số nguyên 0–100, tổng đúng 100; sai trả 422. Chỉ đổi khi RFQ ở `DRAFT`, `OPEN`, `CLOSED`. | P0 |
 | FR-RFQ-09 | Lưu `published_at` khi publish để đo RFQ response time. | P1 |
+| FR-RFQ-10 | NCC được mời xác nhận tham gia (`POST /rfqs/{id}/accept-invitation`) hoặc từ chối kèm lý do bắt buộc (`POST /rfqs/{id}/decline-invitation`) khi RFQ đang `OPEN`; trả lời lần hai trả 409. Mở chi tiết RFQ lần đầu chuyển lời mời sang `VIEWED`; gửi báo giá tự chuyển sang `ACCEPTED`. | P1 |
 | FR-QUO-08 | Quotation có `payment_term_days` (số ngày công nợ đề nghị, số nguyên ≥ 0, tùy chọn). | P0 |
 | FR-CMP-05 | `GET /rfqs/{id}/comparison` trả thêm khối `scoring`: trọng số, công thức, điểm thành phần và tổng điểm từng báo giá, xếp hạng. | P0 |
 | FR-CMP-06 | Khi đề xuất NCC, hệ thống lưu `score_snapshot` (điểm và trọng số tại thời điểm đó) vào selection. | P0 |
@@ -92,6 +93,7 @@ Bảng người nhận:
 | `PR_SUBMITTED` | Manager của company |
 | `PR_APPROVED`, `PR_REJECTED` | Requester |
 | `RFQ_PUBLISHED` | User Supplier của các company được mời |
+| `INVITATION_ACCEPTED`, `INVITATION_DECLINED` | Buyer của company sở hữu RFQ |
 | `QUOTATION_SUBMITTED` | Buyer của company sở hữu RFQ |
 | `SELECTION_PROPOSED` | Manager của company |
 | `SELECTION_APPROVED`, `SELECTION_REJECTED` | Người đề xuất |
@@ -170,6 +172,8 @@ PR:         DRAFT --submit--> PENDING_APPROVAL --approve--> APPROVED
             DRAFT|REJECTED --cancel--> CANCELLED
 RFQ:        DRAFT --publish--> OPEN --close/hết hạn--> CLOSED --Manager duyệt lựa chọn--> AWARDED
             DRAFT|OPEN --cancel--> CANCELLED
+Lời mời:    INVITED --NCC mở RFQ--> VIEWED --xác nhận/gửi báo giá--> ACCEPTED
+            INVITED|VIEWED --từ chối (có lý do)--> DECLINED
 Quotation:  DRAFT --submit--> SUBMITTED --revise trước hạn--> DRAFT
             SUBMITTED --lựa chọn được duyệt--> AWARDED | NOT_SELECTED
 Selection:  PROPOSED --approve--> APPROVED ; PROPOSED --reject--> REJECTED
@@ -275,6 +279,8 @@ Base `/api/v1/`, JSON, lỗi dùng chung cấu trúc `{code, message, field_erro
 | Method / endpoint | Vai trò | Ý nghĩa |
 |---|---|---|
 | `POST /rfqs/{id}/scoring-weights` | Buyer | Đặt trọng số |
+| `POST /rfqs/{id}/accept-invitation` | Supplier được mời | Xác nhận tham gia báo giá |
+| `POST /rfqs/{id}/decline-invitation` | Supplier được mời | Từ chối lời mời, `reason` bắt buộc |
 | `GET /rfqs/{id}/comparison` | Buyer, Manager | Thêm khối `scoring` |
 | `GET /notifications` | Mọi user | Hộp thư; `?unread=true` |
 | `GET /notifications/unread-count` | Mọi user | Số chưa đọc |

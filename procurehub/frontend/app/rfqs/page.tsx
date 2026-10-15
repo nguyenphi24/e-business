@@ -1,7 +1,7 @@
 "use client";
 
 import dayjs from "dayjs";
-import { Alert, Button, DatePicker, Drawer, Form, Input, InputNumber, Modal, Select, Space, Table, Tag, Tooltip, message } from "antd";
+import { Alert, Button, DatePicker, Drawer, Form, Input, InputNumber, Modal, Select, Space, Table, Tag, Tooltip, Typography, message } from "antd";
 import { CheckOutlined, CloseOutlined, DeleteOutlined, ExportOutlined, PlusOutlined, ReloadOutlined, SafetyCertificateOutlined, SendOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
@@ -9,6 +9,14 @@ import AppShell from "@/components/app-shell";
 import { ApiError, ApiList, apiFetch, Comparison, formatMoney, getStoredUser, PurchaseOrder, PurchaseRequest, Quotation, QuotationSignature, RFQ, RFQCreateInput, ScoreResult, ScoringWeights, SupplierRelationship, SupplierSelection } from "@/lib/api";
 
 const labels: Record<string, string> = { DRAFT: "Nháp", OPEN: "Đang mở", CLOSED: "Đã đóng", AWARDED: "Đã chọn", CANCELLED: "Đã hủy", SUBMITTED: "Đã gửi", PROPOSED: "Đề xuất", APPROVED: "Đã duyệt", REJECTED: "Từ chối" };
+const invitationLabels: Record<string, { text: string; color: string }> = {
+  INVITED: { text: "Chưa xem", color: "default" },
+  VIEWED: { text: "Đã xem", color: "blue" },
+  ACCEPTED: { text: "Xác nhận tham gia", color: "cyan" },
+  QUOTED: { text: "Đã gửi báo giá", color: "green" },
+  DECLINED: { text: "Từ chối", color: "red" },
+  EXPIRED: { text: "Hết hạn", color: "default" },
+};
 
 type QuotationFormValues = { lines: Array<{ rfq_line_id: number; offered_quantity: number; unit_price?: number }>; delivery_days?: number; payment_terms?: string; payment_term_days?: number };
 type RFQFormValues = { request_id: string; title: string; instructions?: string; deadline: dayjs.Dayjs; supplier_company_ids: string[]; weights: ScoringWeights };
@@ -69,6 +77,8 @@ export default function RFQsPage() {
   const [selectionForm] = Form.useForm<{ quotation_id: string; rationale: string }>();
   const [decisionForm] = Form.useForm<DecisionFormValues>();
   const [weightsForm] = Form.useForm<{ weights: ScoringWeights }>();
+  const [declineOpen, setDeclineOpen] = useState(false);
+  const [declineForm] = Form.useForm<{ reason: string }>();
   const user = getStoredUser();
   const supplierView = user?.roles.includes("SUPPLIER") ?? false;
   const canPropose = user?.roles.some((role) => ["BUYER", "COMPANY_ADMIN", "SYSTEM_ADMIN"].includes(role)) ?? false;
@@ -144,6 +154,10 @@ export default function RFQsPage() {
   }
 
   async function openRFQ(rfq: RFQ) {
+    if (supplierView) {
+      // Lấy chi tiết để hệ thống ghi nhận "đã xem" và trả trạng thái lời mời mới nhất.
+      try { rfq = await apiFetch<RFQ>(`/rfqs/${rfq.id}`); } catch { /* dùng dữ liệu danh sách */ }
+    }
     setSelected(rfq);
     setComparison(null);
     setQuotation(null);
@@ -240,6 +254,26 @@ export default function RFQsPage() {
     }
   }
 
+  async function respondInvitation(accept: boolean, reason = "") {
+    if (!selected) return;
+    setActionLoading(accept ? "accept" : "decline");
+    try {
+      const updated = await apiFetch<RFQ>(`/rfqs/${selected.id}/${accept ? "accept-invitation" : "decline-invitation"}`, { method: "POST", body: JSON.stringify({ reason }) });
+      setSelected(updated);
+      setDeclineOpen(false);
+      declineForm.resetFields();
+      if (accept) {
+        form.setFieldsValue({ lines: updated.lines.map((line) => ({ rfq_line_id: line.id, offered_quantity: Number(line.quantity) })) });
+        message.success("Đã xác nhận tham gia. Bạn có thể nhập báo giá.");
+      }
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Không gửi được phản hồi lời mời.");
+    } finally {
+      setActionLoading(null);
+    }
+  }
+
   async function reloadQuotation() {
     if (!selected) return;
     try { setQuotation(await apiFetch<Quotation>(`/rfqs/${selected.id}/quotation`)); }
@@ -264,6 +298,8 @@ export default function RFQsPage() {
   }
 
   const submittedQuotation = supplierView && quotation && quotation.status !== "DRAFT" ? quotation : null;
+  const myInvitation = supplierView ? selected?.invitations[0] : undefined;
+  const awaitingResponse = Boolean(myInvitation && ["INVITED", "VIEWED"].includes(myInvitation.status) && !quotation);
 
   return <AppShell>
     <div className="topbar"><div><p className="eyebrow">Sourcing</p><h1 className="page-title">RFQ & báo giá</h1><p className="page-subtitle">{supplierView ? "Phản hồi các yêu cầu báo giá được mời." : "Tạo RFQ, theo dõi báo giá và chọn nhà cung cấp."}</p></div><Space wrap>{canPropose && <Button type="primary" icon={<PlusOutlined />} onClick={() => { rfqForm.resetFields(); setCreateOpen(true); }}>Tạo RFQ</Button>}<Button icon={<ReloadOutlined />} onClick={() => { void load(); void loadCreateOptions(); }}>Làm mới</Button></Space></div>
@@ -272,6 +308,7 @@ export default function RFQsPage() {
       { title: "Mã RFQ", dataIndex: "number", key: "number" },
       { title: "Tiêu đề", dataIndex: "title", key: "title" },
       { title: "Hạn báo giá", dataIndex: "deadline", key: "deadline", render: (value: string) => new Date(value).toLocaleString("vi-VN") },
+      ...(supplierView ? [{ title: "Lời mời", key: "invitation", render: (_: unknown, record: RFQ) => { const status = record.invitations[0]?.status; const label = status ? invitationLabels[status] : undefined; return label ? <Tag color={label.color}>{label.text}</Tag> : "—"; } }] : []),
       { title: "Trạng thái", dataIndex: "status", key: "status", render: (value: string) => <Tag color={value === "OPEN" ? "blue" : value === "AWARDED" ? "green" : value === "CANCELLED" ? "red" : "default"}>{labels[value] ?? value}</Tag> },
       { title: "Thao tác", key: "action", render: (_, record) => <Space size="small" wrap>
         <Button type="link" onClick={(event) => { event.stopPropagation(); void openRFQ(record); }}>Chi tiết</Button>
@@ -281,7 +318,12 @@ export default function RFQsPage() {
       </Space> },
     ]} /></div>
     <Drawer title={selected ? `${selected.number} · ${selected.title}` : "RFQ"} width="min(780px, 100vw)" open={Boolean(selected)} onClose={() => setSelected(null)}>
-      {selected && <><p className="page-subtitle">Hạn phản hồi: {new Date(selected.deadline).toLocaleString("vi-VN")}</p><Table size="small" pagination={false} rowKey="id" dataSource={selected.lines} columns={[{ title: "Hạng mục", dataIndex: "description" }, { title: "SL", dataIndex: "quantity" }, { title: "ĐVT", dataIndex: "unit" }]} />
+      {selected && <><p className="page-subtitle">Hạn phản hồi: {new Date(selected.deadline).toLocaleString("vi-VN")}</p>
+        {!supplierView && selected.invitations.length > 0 && <Table style={{ marginBottom: 16 }} size="small" pagination={false} rowKey="id" dataSource={selected.invitations} columns={[
+          { title: "Nhà cung cấp được mời", render: (_, item) => item.supplier.legal_name },
+          { title: "Phản hồi", dataIndex: "status", render: (value: string, item) => { const label = invitationLabels[value] ?? { text: value, color: "default" }; return <><Tag color={label.color}>{label.text}</Tag>{item.decline_reason && <Typography.Text type="secondary" style={{ display: "block", marginTop: 4 }}>Lý do: {item.decline_reason}</Typography.Text>}</>; } },
+          { title: "Thời điểm", render: (_, item) => item.responded_at || item.viewed_at ? new Date((item.responded_at || item.viewed_at) as string).toLocaleString("vi-VN") : "—" },
+        ]} />}<Table size="small" pagination={false} rowKey="id" dataSource={selected.lines} columns={[{ title: "Hạng mục", dataIndex: "description" }, { title: "SL", dataIndex: "quantity" }, { title: "ĐVT", dataIndex: "unit" }]} />
         {submittedQuotation && <div className="panel" style={{ marginTop: 24 }}>
           <div className="panel-heading"><h2>Báo giá đã gửi (lần {submittedQuotation.revision})</h2><Tag>{labels[submittedQuotation.status] ?? submittedQuotation.status}</Tag></div>
           <p>Tổng: <strong>{formatMoney(submittedQuotation.total)}</strong> (chưa VAT) · Giao {submittedQuotation.delivery_days ?? "—"} ngày · Net {submittedQuotation.payment_term_days ?? "—"}</p>
@@ -293,7 +335,12 @@ export default function RFQsPage() {
           </Space>
           <p className="formula-note">Ký số qua dịch vụ ký từ xa giả lập (sandbox): hệ thống ký mã băm SHA-256 của nội dung báo giá. Nếu dữ liệu bị sửa sau khi ký, bên mua sẽ thấy chữ ký không hợp lệ.</p>
         </div>}
-        {supplierView && selected.status === "OPEN" && !submittedQuotation && <Form form={form} layout="vertical" onFinish={submitQuotation} style={{ marginTop: 24 }}><Form.List name="lines">{(fields) => fields.map((field) => <div className="rfq-quote-row" key={field.key}><Form.Item {...field} name={[field.name, "rfq_line_id"]} hidden><Input /></Form.Item><Form.Item {...field} name={[field.name, "offered_quantity"]} label="SL chào" rules={[{ required: true }]}><InputNumber min={0} style={{ width: "100%" }} /></Form.Item><Form.Item {...field} name={[field.name, "unit_price"]} label="Đơn giá" rules={[{ required: true }]}><InputNumber min={0} style={{ width: "100%" }} /></Form.Item></div>)}</Form.List><Form.Item name="delivery_days" label="Thời gian giao (ngày)"><InputNumber min={0} style={{ width: "100%" }} /></Form.Item><Form.Item name="payment_term_days" label="Số ngày công nợ đề nghị (Net N)"><InputNumber min={0} max={365} precision={0} style={{ width: "100%" }} placeholder="30" /></Form.Item><Form.Item name="payment_terms" label="Điều khoản thanh toán"><Input placeholder="Ví dụ: Chuyển khoản trong 30 ngày" /></Form.Item><Alert type="info" showIcon style={{ marginBottom: 12 }} message="Giá chưa bao gồm VAT. Bên mua không thấy báo giá khi bạn đang sửa (bản nháp)." /><Button type="primary" htmlType="submit" icon={<SendOutlined />}>Gửi báo giá</Button></Form>}
+        {myInvitation && selected.status === "OPEN" && awaitingResponse && <Alert style={{ marginTop: 24 }} type="info" showIcon message="Bạn được mời báo giá cho RFQ này" description="Xác nhận tham gia để nhập báo giá, hoặc từ chối kèm lý do. Bên mua sẽ nhận thông báo ngay." action={<Space direction="vertical">
+          <Button type="primary" icon={<CheckOutlined />} loading={actionLoading === "accept"} onClick={() => void respondInvitation(true)}>Xác nhận tham gia</Button>
+          <Button danger icon={<CloseOutlined />} onClick={() => { declineForm.resetFields(); setDeclineOpen(true); }}>Từ chối</Button>
+        </Space>} />}
+        {myInvitation?.status === "DECLINED" && <Alert style={{ marginTop: 24 }} type="warning" showIcon message="Bạn đã từ chối lời mời này" description={myInvitation.decline_reason} />}
+        {supplierView && selected.status === "OPEN" && !submittedQuotation && !awaitingResponse && myInvitation?.status !== "DECLINED" && <Form form={form} layout="vertical" onFinish={submitQuotation} style={{ marginTop: 24 }}><Form.List name="lines">{(fields) => fields.map((field) => <div className="rfq-quote-row" key={field.key}><Form.Item {...field} name={[field.name, "rfq_line_id"]} hidden><Input /></Form.Item><Form.Item {...field} name={[field.name, "offered_quantity"]} label="SL chào" rules={[{ required: true }]}><InputNumber min={0} style={{ width: "100%" }} /></Form.Item><Form.Item {...field} name={[field.name, "unit_price"]} label="Đơn giá" rules={[{ required: true }]}><InputNumber min={0} style={{ width: "100%" }} /></Form.Item></div>)}</Form.List><Form.Item name="delivery_days" label="Thời gian giao (ngày)"><InputNumber min={0} style={{ width: "100%" }} /></Form.Item><Form.Item name="payment_term_days" label="Số ngày công nợ đề nghị (Net N)"><InputNumber min={0} max={365} precision={0} style={{ width: "100%" }} placeholder="30" /></Form.Item><Form.Item name="payment_terms" label="Điều khoản thanh toán"><Input placeholder="Ví dụ: Chuyển khoản trong 30 ngày" /></Form.Item><Alert type="info" showIcon style={{ marginBottom: 12 }} message="Giá chưa bao gồm VAT. Bên mua không thấy báo giá khi bạn đang sửa (bản nháp)." /><Button type="primary" htmlType="submit" icon={<SendOutlined />}>Gửi báo giá</Button></Form>}
         {!supplierView && canPropose && ["DRAFT", "OPEN", "CLOSED"].includes(selected.status) && <Form form={weightsForm} layout="vertical" onFinish={saveWeights} style={{ marginTop: 24 }}><h3>Trọng số chấm điểm</h3><WeightInputs prefix={["weights"]} /><Button htmlType="submit">Lưu trọng số</Button></Form>}
         {!supplierView && comparison && <div style={{ marginTop: 24 }}><h3>So sánh báo giá</h3><Table size="small" pagination={false} scroll={{ x: "max-content" }} rowKey="id" dataSource={comparison.quotations} columns={[{ title: "Nhà cung cấp", render: (_, item) => item.supplier.legal_name }, { title: "Tổng (chưa VAT)", dataIndex: "total", render: (value: string) => formatMoney(value) }, { title: "Giao hàng", dataIndex: "delivery_days", render: (value: number | null) => value !== null ? `${value} ngày` : "—" }, { title: "Công nợ", dataIndex: "payment_term_days", render: (value: number | null) => value !== null ? `Net ${value}` : "—" }, { title: "Chữ ký số", render: (_, item) => <SignatureTag signature={item.signature} /> }, { title: "Trạng thái", dataIndex: "status", render: (value: string) => <Tag>{labels[value] ?? value}</Tag> }]} />
           <h3 style={{ marginTop: 20 }}>Bảng điểm trọng số</h3>
@@ -320,6 +367,9 @@ export default function RFQsPage() {
         <WeightInputs prefix={["weights"]} />
         <Button block type="primary" htmlType="submit">Tạo RFQ nháp</Button>
       </Form>
+    </Modal>
+    <Modal title="Từ chối lời mời báo giá" open={declineOpen} footer={null} onCancel={() => setDeclineOpen(false)} destroyOnHidden>
+      <Form form={declineForm} layout="vertical" onFinish={(values) => void respondInvitation(false, values.reason)}><Form.Item name="reason" label="Lý do từ chối" rules={[{ required: true, message: "Nhập lý do để bên mua nắm được." }]}><Input.TextArea rows={3} placeholder="Ví dụ: hết hàng, không kịp thời hạn giao" /></Form.Item><Button block danger type="primary" htmlType="submit" loading={actionLoading === "decline"}>Gửi từ chối</Button></Form>
     </Modal>
     <Modal title="Từ chối lựa chọn nhà cung cấp" open={decisionOpen} footer={null} onCancel={() => setDecisionOpen(false)} destroyOnHidden>
       <Form form={decisionForm} layout="vertical" onFinish={decideSelection}><Form.Item name="reason" label="Lý do từ chối" rules={[{ required: true, message: "Nhập lý do từ chối." }]}><Input.TextArea rows={4} /></Form.Item><Button block danger type="primary" htmlType="submit" loading={Boolean(actionLoading)}>Xác nhận từ chối</Button></Form>

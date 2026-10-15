@@ -81,6 +81,7 @@ Logistics thật, chuyển tiền thật, hóa đơn điện tử có giá trị
 ```text
 Buyer tạo PR (kèm ngân sách ước tính) → Manager duyệt
 → Buyer tạo RFQ, đặt trọng số chấm điểm, mời ≥ 2 NCC → publish  [thông báo NCC]
+→ NCC xem lời mời, xác nhận tham gia hoặc từ chối (có lý do)      [thông báo Buyer]
 → NCC gửi/sửa báo giá trước hạn, ký số báo giá bằng OTP           [thông báo Buyer]
 → Buyer đóng RFQ, xem bảng so sánh có điểm, đề xuất NCC + lý do   [thông báo Manager]
 → Manager duyệt lựa chọn (không tự duyệt)                          [thông báo Buyer]
@@ -171,14 +172,18 @@ Buyer tạo PR (kèm ngân sách ước tính) → Manager duyệt
 - Mọi số tiền tính bằng Decimal; số dư hóa đơn luôn = tổng − đã trả thành công.
 - Giao diện ghi rõ "Giá chưa bao gồm VAT" ở báo giá, tách tiền trước thuế/VAT/tổng ở hóa đơn, và nhãn "Sandbox/Giả lập" ở mọi màn hình thanh toán, hóa đơn điện tử, ký số.
 
-## 13. Kịch bản demo (8–12 phút)
+## 13. Kịch bản demo (10–12 phút)
 
-1. Phút 0–2: vấn đề, vai trò, sơ đồ Buyer/Supplier/Finance.
-2. Phút 2–4: Buyer tạo PR (Màn hình ×10, Cáp HDMI ×20, Android Box ×5, ngân sách ước tính), Manager duyệt, Buyer tạo RFQ mời TechVision và Digital Supply.
-3. Phút 4–6: mở trình duyệt thứ hai đăng nhập Supplier, chuông thông báo hiện lời mời không cần refresh; hai NCC gửi báo giá (TechVision rẻ hơn giao lâu hơn, Digital Supply đắt hơn giao nhanh hơn, khác số ngày công nợ); TechVision ký số báo giá bằng OTP.
-4. Phút 6–8: Buyer nhận thông báo, đóng RFQ, chỉnh trọng số, xem bảng điểm và cột chữ ký số, đề xuất NCC; Manager duyệt; Buyer sinh và phát hành PO. (Tùy chọn: sửa trộm giá trong DB để thấy chữ ký chuyển "không hợp lệ".)
-5. Phút 8–10: Supplier xác nhận PO; Buyer ghi nhận giao hàng; Supplier lập hóa đơn Net 30 có VAT 10%, vài giây sau có mã cơ quan thuế và mở trang tra cứu; Finance thanh toán 30% qua trang cổng thanh toán rồi phần còn lại.
-6. Phút 10–12: Buyer đánh giá NCC; xem dashboard KPI, audit timeline; thử truy cập trái quyền (tenant khác) bị chặn.
+Một công ty mua (VNPT Media) và hai nhà cung cấp (TechVision, Digital Supply). Mỗi vai trò mở ở một cửa sổ trình duyệt riêng (hoặc cửa sổ ẩn danh) vì các tab cùng trình duyệt dùng chung phiên đăng nhập. Kịch bản chi tiết từng thao tác nằm trong tài liệu `Kich_ban_demo.md`.
+
+1. Buyer tạo PR "Thiết bị phòng họp tầng 5" (Màn hình 27 inch ×10, Cáp HDMI 3m ×20, ngân sách 70 triệu) và gửi duyệt; Manager nhận thông báo, duyệt PR.
+2. Buyer tạo RFQ từ PR, mời TechVision và Digital Supply, publish.
+3. Hai NCC thấy chuông thông báo không cần tải lại trang, mở lời mời, bấm "Xác nhận tham gia"; Buyer thấy trạng thái lời mời chuyển "Đã xác nhận".
+4. Hai NCC gửi báo giá (TechVision rẻ hơn, giao 12 ngày, Net 30; Digital Supply đắt hơn, giao 4 ngày, Net 45); TechVision ký số báo giá bằng OTP.
+5. Buyer đóng RFQ, xem bảng điểm và cột chữ ký số, đề xuất TechVision kèm lý do; Manager nhận thông báo và duyệt lựa chọn. (Tùy chọn: sửa trộm giá trong DB để thấy chữ ký chuyển "không hợp lệ".)
+6. Buyer sinh và phát hành PO; TechVision xác nhận PO; Buyer ghi nhận nhận đủ hàng và hoàn tất PO.
+7. TechVision lập hóa đơn (VAT 10%), vài giây sau hóa đơn điện tử có mã cơ quan thuế giả lập; Finance nhận thông báo, thanh toán 30% qua cổng giả lập rồi phần còn lại; TechVision nhận thông báo đã thanh toán.
+8. Manager xem dashboard KPI; thử truy cập trái quyền (công ty khác) bị chặn.
 
 ## 14. Quyết định tạm hoãn
 

@@ -28,15 +28,17 @@ COMPANIES = [
     ("other", "Other Buyer", "0400000004", Company.CompanyType.BUYER, ""),
 ]
 
+# Một vai trò mỗi tài khoản cho đúng kịch bản demo (docs/Kich_ban_demo.md): tách quyền thấy rõ khi trình bày.
+# Tên người là tên giả cho demo.
 USERS = [
-    ("buyer@vnptmedia.demo", "vnpt", "Buyer VNPT Media", ["BUYER"]),
-    ("manager@vnptmedia.demo", "vnpt", "Manager VNPT Media", ["MANAGER"]),
-    ("admin@vnptmedia.demo", "vnpt", "Admin VNPT Media", ["COMPANY_ADMIN"]),
-    ("finance@vnptmedia.demo", "vnpt", "Finance VNPT Media", ["FINANCE"]),
-    ("sales@techvision.demo", "tech", "Sales TechVision", ["SUPPLIER"]),
-    ("sales@digitalsupply.demo", "digi", "Sales Digital Supply", ["SUPPLIER"]),
-    ("buyer@otherbuyer.demo", "other", "Buyer Other Buyer", ["BUYER"]),
-    ("sysadmin@procurehub.demo", None, "System Admin", ["SYSTEM_ADMIN"]),
+    ("buyer@vnptmedia.demo", "vnpt", "Nguyễn Minh Anh (Mua hàng)", ["BUYER"]),
+    ("manager@vnptmedia.demo", "vnpt", "Trần Quốc Bảo (Trưởng phòng mua hàng)", ["MANAGER"]),
+    ("finance@vnptmedia.demo", "vnpt", "Lê Thu Hà (Kế toán công nợ)", ["FINANCE"]),
+    ("admin@vnptmedia.demo", "vnpt", "Phạm Đức Long (Quản trị công ty)", ["COMPANY_ADMIN"]),
+    ("sales@techvision.demo", "tech", "Võ Hoàng Nam (Kinh doanh TechVision)", ["SUPPLIER"]),
+    ("sales@digitalsupply.demo", "digi", "Đặng Thùy Linh (Kinh doanh Digital Supply)", ["SUPPLIER"]),
+    ("buyer@otherbuyer.demo", "other", "Bùi Văn Khánh (Mua hàng Other Buyer)", ["BUYER"]),
+    ("sysadmin@procurehub.demo", None, "Quản trị nền tảng", ["SYSTEM_ADMIN"]),
 ]
 
 
@@ -168,5 +170,8 @@ class Command(BaseCommand):
             )
 
         self.stdout.write(self.style.SUCCESS(
-            f"Seed {SEED_VERSION}: {Company.objects.count()} company, {User.objects.count()} user. Mật khẩu: {DEMO_PASSWORD}"
+            f"Seed {SEED_VERSION}: {Company.objects.count()} company, {User.objects.count()} user. Mật khẩu chung: {DEMO_PASSWORD}"
         ))
+        for email, ckey, name, roles in USERS:
+            company = co[ckey].legal_name if ckey else "—"
+            self.stdout.write(f"  {email:<28} {company:<15} {', '.join(roles):<14} {name}")

@@ -27,6 +27,8 @@ Shared standards được tham khảo từ `/Users/tnphi/workspace/conventions/s
 - Chuẩn hóa JSON (`integrations.security.canonical_json`) phải giống hệt sandbox-service; lệch một tham số là mọi chữ ký HMAC/CA sai.
 - Định dạng số trong `quotation_document()` cố định (`:.3f` số lượng, `:.2f` tiền); đổi format là mọi chữ ký báo giá cũ thành INVALID.
 - `os.getenv("X", default)` trả chuỗi rỗng khi compose truyền biến trống — dùng `os.getenv("X") or default` cho URL cấu hình.
+- Frontend chỉ được gọi `/auth/refresh` qua `refreshAccessToken()` (dùng chung một promise): refresh token xoay vòng sau mỗi lần dùng, nên nhiều request song song sau F5 tự refresh sẽ làm các lời gọi sau 401 và hiện lỗi "Authentication credentials were not provided".
+- `.env` local đặt `SANDBOX_BASE_URL`, nên test kế thừa `ProcurementFlowMixin` tắt tích hợp mặc định (`SANDBOX_IN_TEST = False` → `override_settings`); test cần sandbox giả đặt `SANDBOX_IN_TEST = True`. Thiếu bước này test sẽ gọi mạng thật tới cổng 28080.
 - Webhook đọc `request.body` (raw) để tính HMAC trước khi parse JSON; đừng đổi sang `request.data`.
 
 ## Demo deviations

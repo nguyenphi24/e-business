@@ -37,6 +37,16 @@ RULES = {
         lambda rfq: f"Lời mời báo giá {rfq.number} từ {rfq.company.legal_name}",
         "/rfqs",
     ),
+    "INVITATION_ACCEPTED": (
+        lambda invitation: users_with_roles(invitation.rfq.company_id, "BUYER"),
+        lambda invitation: f"{invitation.supplier_company.legal_name} xác nhận tham gia báo giá {invitation.rfq.number}",
+        "/rfqs",
+    ),
+    "INVITATION_DECLINED": (
+        lambda invitation: users_with_roles(invitation.rfq.company_id, "BUYER"),
+        lambda invitation: f"{invitation.supplier_company.legal_name} từ chối lời mời {invitation.rfq.number}",
+        "/rfqs",
+    ),
     "QUOTATION_SUBMITTED": (
         lambda quotation: users_with_roles(quotation.rfq.company_id, "BUYER"),
         lambda quotation: f"{quotation.supplier_company.legal_name} đã gửi báo giá cho {_rfq_number(quotation)}",
@@ -108,6 +118,11 @@ RULES = {
 }
 
 
+def _document_number(entity):
+    # Lời mời/báo giá không có số chứng từ riêng: hiển thị số RFQ.
+    return getattr(entity, "number", "") or getattr(getattr(entity, "rfq", None), "number", "")
+
+
 def notify_event(event_type, entity, actor=None):
     """Tạo Notification cho người nhận theo RULES; bỏ qua chính actor. Không đưa giá vào nội dung (FR-NOTI-05)."""
     recipients_of, title_of, path = RULES[event_type]
@@ -125,7 +140,7 @@ def notify_event(event_type, entity, actor=None):
                 entity_type=entity._meta.label_lower,
                 entity_id=entity.id,
                 title=title_of(entity),
-                payload={"number": getattr(entity, "number", ""), "status": getattr(entity, "status", ""), "path": path},
+                payload={"number": _document_number(entity), "status": getattr(entity, "status", ""), "path": path},
             )
         )
     Notification.objects.bulk_create(rows)

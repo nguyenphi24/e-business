@@ -115,14 +115,19 @@ class RFQInvitation(BaseModel):
     class Status(models.TextChoices):
         INVITED = "INVITED"
         VIEWED = "VIEWED"
+        ACCEPTED = "ACCEPTED"  # NCC xác nhận tham gia báo giá
         QUOTED = "QUOTED"
         DECLINED = "DECLINED"
         EXPIRED = "EXPIRED"
+
+    OPEN_STATUSES = (Status.INVITED, Status.VIEWED, Status.ACCEPTED)
 
     rfq = models.ForeignKey(RFQ, on_delete=models.CASCADE, related_name="invitations")
     supplier_company = models.ForeignKey("identity.Company", on_delete=models.PROTECT)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.INVITED)
     viewed_at = models.DateTimeField(null=True, blank=True)
+    responded_at = models.DateTimeField(null=True, blank=True)
+    decline_reason = models.TextField(blank=True)
 
     class Meta:
         db_table = "rfq_invitations"

@@ -22,8 +22,11 @@ cd backend
 ~/.pyenv/versions/3.11.15/bin/python -m venv .venv311
 .venv311/bin/pip install -r requirements/dev.txt
 .venv311/bin/python manage.py migrate
+.venv311/bin/python manage.py seed_sandbox     # CA + chứng thư ký số TechVision (0200000002), Digital Supply (0300000003)
 .venv311/bin/python manage.py runserver 127.0.0.1:28080
 ```
+
+Trước buổi demo: `seed_sandbox --reset` xóa giao dịch, hóa đơn điện tử, yêu cầu ký và log callback cũ nhưng giữ CA (chữ ký báo giá cũ vẫn xác minh được). `seed_sandbox --reset-ca` đổi luôn CA — sau đó phải chạy `seed_demo --reset` bên ProcureHub vì trust anchor đã ghim CA cũ. `../run.local.sh reset` làm cả hai bên.
 
 Kiểm tra: `curl http://127.0.0.1:28080/health/` trả `{"status": "ok"}`. Trang người dùng: `/gateway/checkout/<id>/`, `/esign/sign/<id>/`, `/einvoice/lookup/?code=<mã>`.
 

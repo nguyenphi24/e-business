@@ -64,6 +64,22 @@ Lần chạy thứ hai (15/10/2026) có sandbox-service, qua HTTP thật giữa 
 | Thanh toán phần còn lại, rồi cổng gửi lại IPN cùng `event_id` | Hóa đơn "đã thanh toán", số dư 0, không bị cộng tiền lần hai |
 | Dashboard Manager | Thời gian duyệt PR 6 giờ (n = 3), tỷ lệ NCC báo giá 100% (n = 3), giao đúng hạn 100% (n = 2), tiết kiệm 26,1 triệu (20,1%) |
 
+Lần chạy thứ ba (15/10/2026) theo đúng kịch bản demo (`docs/Kich_ban_demo.md`), dữ liệu vừa reset bằng `./run.local.sh reset`, chạy tự động qua API:
+
+| Bước | Kết quả quan sát |
+|---|---|
+| Buyer gửi PR, Manager duyệt | Manager nhận `PR_SUBMITTED` |
+| Publish RFQ-2026-0002 mời 2 NCC | Cả hai NCC nhận `RFQ_PUBLISHED`; mở RFQ chuyển lời mời sang "Đã xem" |
+| Hai NCC bấm "Xác nhận tham gia" | Buyer thấy cả hai lời mời "Đã xác nhận", nhận `INVITATION_ACCEPTED` |
+| Hai NCC gửi báo giá, TechVision ký OTP | Chữ ký TechVision "hợp lệ", Digital Supply "chưa ký"; điểm 89,21 / 79,28 |
+| Buyer đề xuất TechVision, Manager duyệt | Manager nhận `SELECTION_PROPOSED` |
+| PO-2026-0002 phát hành, NCC xác nhận, nhận đủ hàng, hoàn tất | NCC nhận `PO_ISSUED`, Buyer nhận `PO_ACKNOWLEDGED` |
+| TechVision lập hóa đơn INV-2026-0002 | 42.400.000 + VAT 4.240.000 = 46.640.000; hóa đơn điện tử `SBX26/1` đã cấp mã; Finance nhận `INVOICE_ISSUED`, `EINVOICE_ISSUED` |
+| Finance trả 30% rồi phần còn lại qua cổng | `PARTIALLY_PAID` (còn 32.648.000) → `PAID`; TechVision nhận `PAYMENT_SUCCEEDED` |
+| Dashboard; Buyer công ty khác mở hóa đơn | Đủ 6 KPI; công ty khác nhận 404 |
+
+Kiểm thử tự động bổ sung cho lời mời: xác nhận, từ chối bắt buộc lý do (422), trả lời lần hai (409), NCC không được mời không thao tác được.
+
 Lưu ý cho thuyết trình: bảng điểm xếp NCC giao nhanh lên đầu dù không rẻ nhất. Đây là điểm minh họa cho nguyên tắc "điểm hỗ trợ, con người quyết định": Buyer có thể chọn khác nhưng phải ghi lý do, và Manager duyệt.
 
 Số liệu KPI ở trên là dữ liệu seed và dữ liệu thử nghiệm, không phải kết quả khảo sát doanh nghiệp.

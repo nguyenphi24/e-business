@@ -31,6 +31,7 @@ Yêu cầu: Docker Desktop (đang chạy), Python 3.11+ (khuyến nghị pyenv `
 
 ```bash
 ./run.local.sh          # kiểm tra môi trường → cài phụ thuộc còn thiếu → bật PostgreSQL, backend, frontend, sandbox-service
+./run.local.sh reset    # xóa dữ liệu demo cũ (ProcureHub + sandbox) rồi khởi động — chạy trước mỗi buổi demo
 ./run.local.sh check    # chỉ kiểm tra và cài, không khởi động
 ./run.local.sh stop     # tắt các tiến trình đã bật (từ terminal khác); hoặc Ctrl+C ở terminal đang chạy
 ```
@@ -47,27 +48,30 @@ Script kiểm tra Python và Node cài sẵn trên máy trước, không đủ p
 | sandbox-service | 28080 |
 
 1. **Cấu hình:** `cp procurehub/.env.example procurehub/.env` và `cp sandbox-service/.env.example sandbox-service/.env`. Điền `SECRET_KEY` riêng cho mỗi bên; `SANDBOX_API_KEY` và `SANDBOX_WEBHOOK_SECRET` **phải giống nhau ở hai file** (`openssl rand -hex 32`).
-2. **sandbox-service:** làm theo [`sandbox-service/README.md`](sandbox-service/README.md) (`migrate`, `runserver 127.0.0.1:28080`).
+2. **sandbox-service:** làm theo [`sandbox-service/README.md`](sandbox-service/README.md) (`migrate`, `seed_sandbox`, `runserver 127.0.0.1:28080`).
 3. **ProcureHub:** làm theo [`procurehub/README.md`](procurehub/README.md) (`docker compose up -d`, `migrate`, `seed_demo`, `runserver 48000`, `npm run dev`).
 4. Mở `http://localhost:43000`, đăng nhập bằng tài khoản demo (mật khẩu chung `Demo@2026`):
 
-| Email | Vai trò |
-|---|---|
-| `buyer@vnptmedia.demo` | Người mua hàng |
-| `manager@vnptmedia.demo` | Quản lý phê duyệt |
-| `finance@vnptmedia.demo` | Kế toán |
-| `sales@techvision.demo`, `sales@digitalsupply.demo` | Nhà cung cấp |
+| Email | Người dùng | Vai trò |
+|---|---|---|
+| `buyer@vnptmedia.demo` | Nguyễn Minh Anh | Mua hàng (VNPT Media) |
+| `manager@vnptmedia.demo` | Trần Quốc Bảo | Trưởng phòng mua hàng, duyệt |
+| `finance@vnptmedia.demo` | Lê Thu Hà | Kế toán công nợ |
+| `admin@vnptmedia.demo` | Phạm Đức Long | Quản trị công ty |
+| `sales@techvision.demo` | Võ Hoàng Nam | Nhà cung cấp TechVision |
+| `sales@digitalsupply.demo` | Đặng Thùy Linh | Nhà cung cấp Digital Supply |
+| `buyer@otherbuyer.demo` | Bùi Văn Khánh | Mua hàng công ty khác (thử cô lập dữ liệu) |
 
 Không chạy sandbox-service thì để trống `SANDBOX_BASE_URL` trong `procurehub/.env`: hệ thống vẫn chạy, thanh toán dùng nút mô phỏng nội bộ, không có hóa đơn điện tử và ký số.
 
 ## Kiểm thử
 
 ```bash
-# ProcureHub — 47 test; bản PostgreSQL: procurehub/scripts/acceptance_postgres.sh
+# ProcureHub — 51 test; bản PostgreSQL: procurehub/scripts/acceptance_postgres.sh
 cd procurehub/backend && SECRET_KEY=test USE_SQLITE=true SANDBOX_WEBHOOK_SECRET=test python manage.py test
 
-# sandbox-service — 13 test
+# sandbox-service — 15 test
 cd sandbox-service/backend && SECRET_KEY=test SANDBOX_API_KEY=test SANDBOX_WEBHOOK_SECRET=test python manage.py test
 ```
 
-Kịch bản demo 8–12 phút và kết quả chạy thật: [`docs/specs/04_Test_Demo.md`](docs/specs/04_Test_Demo.md).
+Kịch bản demo 10–12 phút (1 công ty mua, 2 nhà cung cấp): [`docs/Kich_ban_demo.md`](docs/Kich_ban_demo.md). Kết quả chạy thật: [`docs/specs/04_Test_Demo.md`](docs/specs/04_Test_Demo.md).

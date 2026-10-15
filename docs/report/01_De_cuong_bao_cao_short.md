@@ -271,7 +271,7 @@ Bảng 9.1. Milestones
 | M2. Hiệu chỉnh | 30/10 – 12/11/2026 | Điều chỉnh TO-BE, bảng giá, trọng số mặc định theo khảo sát |
 | M3. Kiểm thử khả dụng | 13/11 – 24/11/2026 | Kiểm thử 5–8 người dùng, sửa lỗi, đạt release gate |
 | M4. Báo cáo final | 25/11 – 01/12/2026 | Báo cáo, slide, tài chính cập nhật |
-| M5. Thuyết trình | Tuần 13–15 | Demo 8–12 phút; sau môn học: pilot |
+| M5. Thuyết trình | Tuần 13–15 | Demo 10–12 phút; sau môn học: pilot |
 
 # 10. KẾT LUẬN
 

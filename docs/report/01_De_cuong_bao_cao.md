@@ -516,9 +516,9 @@ Bảng 9.1. Kế hoạch milestones gắn với lịch học kỳ
 | M2. Thiết kế lại theo dữ liệu | 30/10 – 12/11/2026 | Điều chỉnh TO-BE, Business Model Canvas, bảng giá, trọng số mặc định theo khảo sát | Review chéo nghiệp vụ, bảo mật |
 | M3. Kiểm thử khả dụng | 13/11 – 24/11/2026 | Kiểm thử 5–8 người dùng, sửa lỗi, đo KPI công nghệ | Demo toàn luồng; đạt release gate |
 | M4. Báo cáo final | 25/11 – 01/12/2026 | Báo cáo final, slide, tài chính cập nhật | Nộp đúng hạn (tuần 12) |
-| M5. Thuyết trình | Tuần 13–15 | Trình bày, demo 8–12 phút; sau môn học: pilot | Theo lịch của lớp; go/no-go (Mục 8) |
+| M5. Thuyết trình | Tuần 13–15 | Trình bày, demo 10–12 phút; sau môn học: pilot | Theo lịch của lớp; go/no-go (Mục 8) |
 
-Kịch bản demo 8–12 phút: (1) vấn đề và vai trò; (2) Buyer tạo PR có ngân sách, Manager duyệt, Buyer tạo RFQ; (3) mở trình duyệt thứ hai cho Supplier, thông báo đến không cần làm mới trang, hai nhà cung cấp báo giá, TechVision ký số báo giá bằng OTP; (4) Buyer xem bảng điểm, đề xuất, Manager duyệt, phát hành PO; (5) Supplier xác nhận, Buyer nhận hàng, Supplier lập hóa đơn Net 30 có VAT, hóa đơn điện tử được cấp mã, Finance thanh toán 30% qua trang cổng rồi phần còn lại; (6) đánh giá nhà cung cấp, xem dashboard KPI, audit và thử truy cập trái quyền bị chặn.
+Kịch bản demo 10–12 phút với một công ty mua và hai nhà cung cấp, mỗi vai trò một cửa sổ trình duyệt: (1) vấn đề và vai trò; (2) Buyer tạo PR có ngân sách, Manager duyệt, Buyer tạo RFQ mời hai nhà cung cấp; (3) thông báo đến nhà cung cấp không cần làm mới trang, hai nhà cung cấp xác nhận tham gia rồi báo giá, TechVision ký số báo giá bằng OTP; (4) Buyer xem bảng điểm, đề xuất, Manager duyệt, phát hành PO; (5) Supplier xác nhận, Buyer nhận hàng, Supplier lập hóa đơn Net 30 có VAT, hóa đơn điện tử được cấp mã, Finance thanh toán 30% qua trang cổng rồi phần còn lại; (6) đánh giá nhà cung cấp, xem dashboard KPI, audit và thử truy cập trái quyền bị chặn.
 
 # 10. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
 

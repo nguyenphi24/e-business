@@ -31,6 +31,9 @@ Vai trò: `BUYER`, `MANAGER`, `FINANCE`, `SUPPLIER`, `COMPANY_ADMIN`, `SYSTEM_AD
 - `GET /suppliers` — supplier relationship active trong company của buyer, kèm `rating_average` (1–5) và `rating_count`.
 - `GET/POST /rfqs` — body tạo nhận `scoring_weights` tùy chọn `{price, delivery, rating, payment_terms}` (số nguyên 0–100, tổng 100; mặc định 45/25/20/10). Response có `scoring_weights`, `published_at`.
 - `POST /rfqs/{id}/publish`, `/close`, `/cancel`, `/invitations`
+- `GET /rfqs/{id}` — Supplier được mời mở lần đầu thì lời mời `INVITED` → `VIEWED`. `invitations[]` có `status` ∈ `INVITED`, `VIEWED`, `ACCEPTED`, `DECLINED`, `responded_at`, `decline_reason`.
+- `POST /rfqs/{id}/accept-invitation` — Supplier được mời, RFQ `OPEN`; lời mời → `ACCEPTED`, Buyer nhận `INVITATION_ACCEPTED`. Đã trả lời rồi thì 409 `invalid_transition`. Gửi báo giá cũng tự chuyển `ACCEPTED`.
+- `POST /rfqs/{id}/decline-invitation` — body `{reason}` bắt buộc (thiếu: 422); lời mời → `DECLINED`, Buyer nhận `INVITATION_DECLINED`; sau đó không gửi báo giá được.
 - `POST /rfqs/{id}/scoring-weights` — Buyer; body `{scoring_weights: {...}}`; chỉ khi RFQ `DRAFT`/`OPEN`/`CLOSED`, sai tổng trả 422, sau `AWARDED` trả 409.
 - `GET /rfqs/{id}/comparison` — trả `rfq`, `quotations` và `scoring` `{weights, formula, neutral_rating, results[]}`; mỗi result có `quotation_id`, `supplier`, `components {price, delivery, rating, payment_terms}`, `rating_available`, `total_score`, `rank`.
 - `GET/POST /rfqs/{id}/quotation` — body nhận thêm `payment_term_days` (0–365).

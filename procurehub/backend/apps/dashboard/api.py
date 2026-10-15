@@ -36,10 +36,11 @@ def pending_actions(user, querysets):
         invitations = RFQInvitation.objects.filter(
             supplier_company_id=user.company_id,
             rfq__status=RFQ.Status.OPEN,
-            status__in=[RFQInvitation.Status.INVITED, RFQInvitation.Status.VIEWED],
+            status__in=RFQInvitation.OPEN_STATUSES,
         ).select_related("rfq")
         for invitation in invitations.order_by("-updated_at")[:10]:
-            items.append(action_item("RFQ_RESPONSE", invitation.rfq, invitation.rfq.number, "RFQ cần báo giá"))
+            label = "RFQ cần báo giá" if invitation.status == RFQInvitation.Status.ACCEPTED else "Lời mời báo giá cần xác nhận"
+            items.append(action_item("RFQ_RESPONSE", invitation.rfq, invitation.rfq.number, label))
 
         for order in querysets["purchase_orders"].filter(status=PurchaseOrder.Status.ISSUED).order_by("-updated_at")[:10]:
             items.append(action_item("PO_RESPONSE", order, order.number, "PO chờ xác nhận hoặc từ chối"))

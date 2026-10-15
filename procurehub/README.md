@@ -122,6 +122,7 @@ Sourcing:
 - `GET /api/v1/suppliers` trả các supplier relationship `ACTIVE` trong company của buyer.
 - `GET/POST /api/v1/rfqs`
 - `POST /api/v1/rfqs/{id}/publish`, `/close`, `/cancel`, `/invitations`
+- `POST /api/v1/rfqs/{id}/accept-invitation`, `/decline-invitation` (Supplier xác nhận/từ chối lời mời, từ chối cần `reason`)
 - `GET /api/v1/rfqs/{id}/comparison`
 - `GET/POST /api/v1/rfqs/{id}/quotation`
 - `POST /api/v1/quotations/{id}/submit`, `/revise`; `PATCH /api/v1/quotations/{id}` khi còn draft
@@ -145,16 +146,18 @@ Repo tham khảo bộ chuẩn tại `/Users/tnphi/workspace/conventions`. Procur
 
 Mật khẩu chung `Demo@2026` (chỉ dùng cho demo).
 
-| Email | Company | Vai trò |
-|---|---|---|
-| buyer@vnptmedia.demo | VNPT Media | Buyer |
-| manager@vnptmedia.demo | VNPT Media | Manager |
-| admin@vnptmedia.demo | VNPT Media | Company Admin |
-| sales@techvision.demo | TechVision | Supplier |
-| sales@digitalsupply.demo | Digital Supply | Supplier |
-| finance@vnptmedia.demo | VNPT Media | Finance |
-| buyer@otherbuyer.demo | Other Buyer | Buyer |
-| sysadmin@procurehub.demo | — | System Admin |
+| Email | Company | Vai trò | Tên hiển thị |
+|---|---|---|---|
+| buyer@vnptmedia.demo | VNPT Media | Buyer | Nguyễn Minh Anh (Mua hàng) |
+| manager@vnptmedia.demo | VNPT Media | Manager | Trần Quốc Bảo (Trưởng phòng mua hàng) |
+| finance@vnptmedia.demo | VNPT Media | Finance | Lê Thu Hà (Kế toán công nợ) |
+| admin@vnptmedia.demo | VNPT Media | Company Admin | Phạm Đức Long (Quản trị công ty) |
+| sales@techvision.demo | TechVision | Supplier | Võ Hoàng Nam (Kinh doanh TechVision) |
+| sales@digitalsupply.demo | Digital Supply | Supplier | Đặng Thùy Linh (Kinh doanh Digital Supply) |
+| buyer@otherbuyer.demo | Other Buyer | Buyer | Bùi Văn Khánh (Mua hàng Other Buyer) |
+| sysadmin@procurehub.demo | — | System Admin | Quản trị nền tảng |
+
+`seed_demo` in bảng tài khoản này khi chạy. Kịch bản demo dùng các tài khoản trên: `../docs/Kich_ban_demo.md`. Trước buổi demo chạy `seed_demo --reset` cùng `seed_sandbox --reset` bên sandbox-service (hoặc `../run.local.sh reset`) để số chứng từ bắt đầu từ RFQ-2026-0002, INV-2026-0002 và hóa đơn điện tử `SBX26/1`.
 
 Seed cũng tạo: đánh giá NCC cho PO mẫu, hóa đơn Net 30 đã thanh toán 30% qua sandbox; quan hệ active giữa VNPT Media với TechVision và Digital Supply; một Purchase Request APPROVED mẫu; một chuỗi request → RFQ → quotation → selection → PO COMPLETED mẫu cho Dashboard; một request nháp của Other Buyer để kiểm thử truy cập chéo company.
 
