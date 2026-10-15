@@ -1,0 +1,13 @@
+{
+  "name": "e-business-docs-build",
+  "private": true,
+  "description": "Dựng sơ đồ PNG và tệp .docx của báo cáo từ Markdown",
+  "scripts": {
+    "figures": "python3 make_figures.py ../figures && node render_figures.js ../figures",
+    "docx": "node md2docx.js report.json && node md2docx.js report_short.json && node md2docx.js appendix.json"
+  },
+  "dependencies": {
+    "docx": "9.5.1",
+    "puppeteer-core": "23.11.1"
+  }
+}

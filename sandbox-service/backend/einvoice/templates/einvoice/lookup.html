@@ -1,0 +1,32 @@
+{% extends "sandbox/base.html" %}
+{% load humanize_vnd %}
+{% block title %}Tra cứu hóa đơn{% endblock %}
+{% block brand_color %}#b91c1c{% endblock %}
+{% block heading %}SandboxInvoice — Tra cứu hóa đơn điện tử giả lập{% endblock %}
+{% block subheading %}Mô phỏng nhà cung cấp hóa đơn điện tử và bước cơ quan thuế cấp mã{% endblock %}
+{% block content %}
+<form class="card" method="get">
+  <label class="label" for="code">Mã tra cứu</label><br>
+  <input id="code" name="code" value="{{ code }}" placeholder="VD: A1B2C3D4E5"> <button class="primary">Tra cứu</button>
+</form>
+{% if einvoice %}
+<div class="card watermark">
+  <div class="row"><span class="label">Ký hiệu / Số</span><strong>{{ einvoice.symbol }} / {{ einvoice.number|stringformat:"07d" }}</strong></div>
+  <div class="row"><span class="label">Ngày lập</span><span>{{ einvoice.issue_date|date:"d/m/Y" }}</span></div>
+  <div class="row"><span class="label">Mã cơ quan thuế (giả lập)</span>
+    <span class="mono">{% if einvoice.status == "ISSUED" %}{{ einvoice.tax_code }}{% else %}Đang chờ cấp mã…{% endif %}</span></div>
+  <div class="row"><span class="label">Người bán</span><span>{{ einvoice.seller_name }} — MST {{ einvoice.seller_tax_code }}</span></div>
+  <div class="row"><span class="label">Người mua</span><span>{{ einvoice.buyer_name }} — MST {{ einvoice.buyer_tax_code }}</span></div>
+  <table style="margin-top:12px">
+    <tr><th>#</th><th>Hàng hóa</th><th>ĐVT</th><th class="num">SL</th><th class="num">Đơn giá</th><th class="num">Thành tiền</th></tr>
+    {% for line in einvoice.lines %}<tr><td>{{ forloop.counter }}</td><td>{{ line.name }}</td><td>{{ line.unit }}</td><td class="num">{{ line.quantity|qty }}</td><td class="num">{{ line.unit_price|vnd }}</td><td class="num">{{ line.amount|vnd }}</td></tr>{% endfor %}
+    <tr><td colspan="5" class="num">Cộng tiền hàng</td><td class="num">{{ einvoice.subtotal|vnd }}</td></tr>
+    <tr><td colspan="5" class="num">Thuế GTGT {{ einvoice.vat_rate|floatformat:0 }}%</td><td class="num">{{ einvoice.vat_amount|vnd }}</td></tr>
+    <tr><td colspan="5" class="num"><strong>Tổng thanh toán</strong></td><td class="num"><strong>{{ einvoice.total|vnd }} {{ einvoice.currency }}</strong></td></tr>
+  </table>
+  <div class="actions"><a class="button ghost" href="/einvoice/{{ einvoice.lookup_code }}/xml/">Tải XML</a></div>
+</div>
+{% elif searched %}
+<div class="card error">Không tìm thấy hóa đơn với mã tra cứu này.</div>
+{% endif %}
+{% endblock %}

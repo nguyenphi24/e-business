@@ -1,0 +1,40 @@
+# Stack PRODUCTION. Chạy qua deploy.prod.sh / compose.prod.sh, không gọi
+# `docker compose` trực tiếp. SQLite là file nhúng trong container, không
+# phải service riêng — không có stack dev nào ở ROOT (xem ../docker-compose.yml
+# không tồn tại với --db sqlite).
+#
+# `name:` bắt buộc — thiếu thì project name mặc định lấy theo tên thư mục và
+# đụng với stack dev nếu sau này có.
+name: sandbox-service
+
+services:
+  app:
+    # Image do build.sh push sẵn, deploy.prod.sh chỉ pull — host production
+    # không bao giờ tự build. Gọi `docker compose` trực tiếp sẽ fail ở đây,
+    # đúng như thiết kế.
+    image: ${SANDBOX_SERVICE_IMAGE:?chạy qua deploy.prod.sh, không gọi docker compose trực tiếp}
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: ${SANDBOX_SERVICE_SECRET_KEY:?SANDBOX_SERVICE_SECRET_KEY is required}
+      SANDBOX_API_KEY: ${SANDBOX_SERVICE_API_KEY:?SANDBOX_SERVICE_API_KEY is required}
+      SANDBOX_WEBHOOK_SECRET: ${SANDBOX_SERVICE_WEBHOOK_SECRET:?SANDBOX_SERVICE_WEBHOOK_SECRET is required}
+      ALLOWED_HOSTS: ${SANDBOX_SERVICE_ALLOWED_HOSTS:?SANDBOX_SERVICE_ALLOWED_HOSTS is required}
+      PUBLIC_BASE_URL: ${SANDBOX_SERVICE_PUBLIC_BASE_URL:?SANDBOX_SERVICE_PUBLIC_BASE_URL is required}
+      ALLOWED_CALLBACK_PREFIXES: ${SANDBOX_SERVICE_ALLOWED_CALLBACK_PREFIXES:?SANDBOX_SERVICE_ALLOWED_CALLBACK_PREFIXES is required}
+      ALLOWED_RETURN_PREFIXES: ${SANDBOX_SERVICE_ALLOWED_RETURN_PREFIXES:?SANDBOX_SERVICE_ALLOWED_RETURN_PREFIXES is required}
+      EINVOICE_TAX_DELAY_SECONDS: ${SANDBOX_SERVICE_EINVOICE_TAX_DELAY_SECONDS:-3}
+      DATABASE_PATH: ${SANDBOX_SERVICE_DB_PATH:-/data/sandbox_service.db}
+      TZ: Asia/Ho_Chi_Minh
+    # File .db không tái tạo được — PHẢI nằm trên volume, xem
+    # standard/deploy.md mục "Volume production".
+    volumes:
+      - sandbox_service_db_prod_data:/data
+    # Container luôn nghe một cổng cố định; cổng phía host là lựa chọn lúc
+    # deploy, luôn bind 127.0.0.1 — chỉ nginx trên host này chạm tới.
+    ports:
+      # gunicorn trong image nghe 8000 (backend/gunicorn.conf.py, Dockerfile EXPOSE/HEALTHCHECK).
+      - "127.0.0.1:${SANDBOX_SERVICE_HOST_PORT:-8080}:8000"
+
+volumes:
+  sandbox_service_db_prod_data:
+    name: sandbox_service_db_prod_data

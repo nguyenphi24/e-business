@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="940" viewBox="0 0 1480 940"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker><marker id="arrow-start" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker></defs><rect width="100%" height="100%" fill="#fff"/><rect x="40" y="40" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="40" y="40" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="200.0" y="61.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Company</text>
+<text x="200.0" y="116.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">id, legal_name, tax_code</text>
+<text x="200.0" y="134.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">company_type, category</text>
+<rect x="400" y="40" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="400" y="40" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="560.0" y="61.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">User / UserRole</text>
+<text x="560.0" y="107.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">company_id, email</text>
+<text x="560.0" y="125.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">role: BUYER, MANAGER,</text>
+<text x="560.0" y="143.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">FINANCE, SUPPLIER, ADMIN</text>
+<rect x="760" y="40" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="760" y="40" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="920.0" y="61.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Notification</text>
+<text x="920.0" y="116.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">recipient_id, event_type</text>
+<text x="920.0" y="134.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">entity, title, read_at</text>
+<rect x="1120" y="40" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="1120" y="40" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="1280.0" y="61.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">AuditEvent</text>
+<text x="1280.0" y="116.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">actor_id, action, entity</text>
+<text x="1280.0" y="134.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">payload, request_id</text>
+<rect x="40" y="260" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="40" y="260" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="200.0" y="281.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">SupplierRelationship</text>
+<text x="200.0" y="336.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">buyer_company_id</text>
+<text x="200.0" y="354.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">supplier_company_id, status</text>
+<rect x="400" y="260" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="400" y="260" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="560.0" y="281.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">PurchaseRequest (+Line)</text>
+<text x="560.0" y="336.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">company_id, requester_id</text>
+<text x="560.0" y="354.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">estimated_budget, submitted_at</text>
+<rect x="760" y="260" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="760" y="260" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="920.0" y="281.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">RFQ (+Line, Invitation)</text>
+<text x="920.0" y="336.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">deadline, status</text>
+<text x="920.0" y="354.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">scoring_weights, published_at</text>
+<rect x="1120" y="260" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="1120" y="260" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="1280.0" y="281.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Quotation (+Line, Revision)</text>
+<text x="1280.0" y="336.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">supplier_company_id, total</text>
+<text x="1280.0" y="354.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">delivery_days, payment_term_days</text>
+<rect x="40" y="480" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="40" y="480" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="200.0" y="501.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">SupplierEvaluation</text>
+<text x="200.0" y="556.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">quality_score, delivery_score</text>
+<text x="200.0" y="574.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">buyer/supplier company</text>
+<rect x="400" y="480" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="400" y="480" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="560.0" y="501.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">PurchaseOrder (+Line, Delivery)</text>
+<text x="560.0" y="556.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">snapshot giá, payment_term_days</text>
+<text x="560.0" y="574.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">issued_at, delivered_at</text>
+<rect x="760" y="480" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="760" y="480" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="920.0" y="501.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">SupplierSelection</text>
+<text x="920.0" y="556.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">rationale, score_snapshot</text>
+<text x="920.0" y="574.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">proposed_by, decided_by</text>
+<rect x="1120" y="480" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="1120" y="480" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="1280.0" y="501.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">QuotationSignature</text>
+<text x="1280.0" y="556.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">revision, document_hash</text>
+<text x="1280.0" y="574.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">signature, certificate, status</text>
+<rect x="400" y="700" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="400" y="700" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="560.0" y="721.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Invoice</text>
+<text x="560.0" y="776.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">subtotal, VAT 10%, total, due_date</text>
+<text x="560.0" y="794.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">e-invoice: ký hiệu, số, mã CQT</text>
+<rect x="760" y="700" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="760" y="700" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="920.0" y="721.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Payment</text>
+<text x="920.0" y="776.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">amount, status, provider</text>
+<text x="920.0" y="794.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">external_ref, checkout_url</text>
+<rect x="1120" y="700" width="320" height="130" rx="8" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<rect x="1120" y="700" width="320" height="40" rx="8" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="1280.0" y="721.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">PaymentEvent</text>
+<text x="1280.0" y="776.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">event_id (unique)</text>
+<text x="1280.0" y="794.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">status, duplicate_count</text>
+<path d="M 360.0 105.0 L 400.0 105.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="358.2" y="80.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="380.0" y="91.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 200.0 170.0 L 200.0 260.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="117.7" y="204.5" width="164.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="200.0" y="215.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — * (buyer, supplier)</text>
+<path d="M 720.0 105.0 L 760.0 105.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="718.2" y="80.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="91.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 560.0 170.0 L 560.0 260.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="497.9" y="204.5" width="124.2" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="560.0" y="215.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — * (requester)</text>
+<path d="M 720.0 325.0 L 760.0 325.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="718.2" y="300.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="311.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 1080.0 325.0 L 1120.0 325.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="1078.2" y="300.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="1100.0" y="311.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 920.0 390.0 L 920.0 480.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="898.2" y="424.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="920.0" y="435.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 760.0 545.0 L 720.0 545.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="718.2" y="520.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="531.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — 1</text>
+<path d="M 400.0 545.0 L 360.0 545.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="348.1" y="520.5" width="63.8" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="380.0" y="531.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — 0..1</text>
+<path d="M 560.0 610.0 L 560.0 700.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="538.2" y="644.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="560.0" y="655.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 720.0 765.0 L 760.0 765.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="718.2" y="740.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="751.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 1080.0 765.0 L 1120.0 765.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="1078.2" y="740.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="1100.0" y="751.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<path d="M 1160.0 390.0 L 1160.0 430.0 L 1100.0 430.0 L 1100.0 545.0 L 1080.0 545.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="1042.0" y="420.2" width="116.1" height="19.5" fill="#fff" opacity="0.92"/>
+<text x="1100" y="430.0" font-family="Times New Roman, Times, serif" font-size="13" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — * (được chọn)</text>
+<path d="M 1340.0 390.0 L 1340.0 480.0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<rect x="1318.2" y="429.5" width="43.6" height="21.0" fill="#fff" opacity="0.92"/>
+<text x="1340.0" y="440.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#1f3864" text-anchor="middle" dominant-baseline="middle">1 — *</text>
+<rect x="40" y="870" width="1400" height="44" rx="4" fill="#fff4d6" stroke="#d4a017" stroke-width="2"/>
+<text x="740" y="892.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Mọi bản ghi nghiệp vụ gắn company sở hữu hoặc quan hệ (Invitation, PO, Invoice) để kiểm tra phạm vi truy cập. AuditEvent ghi actor (User) cho mọi thực thể.</text></svg>

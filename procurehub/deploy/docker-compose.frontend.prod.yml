@@ -1,0 +1,8 @@
+name: procurehub-frontend
+
+services:
+  frontend:
+    image: ${PROCUREHUB_FRONTEND_IMAGE:?run deploy.prod.sh with an immutable frontend image tag}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PROCUREHUB_FRONTEND_HOST_PORT:-8081}:8080"

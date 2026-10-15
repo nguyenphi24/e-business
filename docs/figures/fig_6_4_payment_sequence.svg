@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1000" viewBox="0 0 1480 1000"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker><marker id="arrow-start" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker></defs><rect width="100%" height="100%" fill="#fff"/><rect x="40.0" y="20" width="240" height="60" rx="10" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="160.0" y="39.8" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Finance</text>
+<text x="160.0" y="60.2" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">(trình duyệt)</text>
+<line x1="160.0" y1="80" x2="160.0" y2="980" stroke="#8fa3c7" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="426.66666666666674" y="20" width="240" height="60" rx="10" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="546.6666666666667" y="50.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">API Django</text>
+<line x1="546.6666666666667" y1="80" x2="546.6666666666667" y2="980" stroke="#8fa3c7" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="813.3333333333334" y="20" width="240" height="60" rx="10" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="933.3333333333334" y="39.8" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Cổng thanh toán</text>
+<text x="933.3333333333334" y="60.2" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">(sandbox-service)</text>
+<line x1="933.3333333333334" y1="80" x2="933.3333333333334" y2="980" stroke="#8fa3c7" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="1200.0" y="20" width="240" height="60" rx="10" fill="#dbe4f3" stroke="#1f3864" stroke-width="2"/>
+<text x="1320.0" y="50.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">PostgreSQL</text>
+<line x1="1320.0" y1="80" x2="1320.0" y2="980" stroke="#8fa3c7" stroke-width="2" stroke-dasharray="6 6"/>
+<path d="M 160.0 120.0 L 546.7 120.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="153.9" y="92.8" width="398.8" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="353.33333333333337" y="104.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">POST /invoices/{id}/payments (Idempotency-Key, amount)</text>
+<path d="M 546.7 178.0 L 1320.0 178.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="679.9" y="150.8" width="506.8" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="933.3333333333334" y="162.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">khóa Invoice; amount ≤ số dư − lệnh đang chờ; Payment PENDING; COMMIT</text>
+<path d="M 546.7 236.0 L 933.3 236.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="526.2" y="208.8" width="427.6" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="220.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">POST /gateway/transactions (X-Api-Key) — ngoài transaction</text>
+<path d="M 933.3 294.0 L 546.7 294.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="691.8" y="266.8" width="96.4" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="278.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">checkout_url</text>
+<path d="M 546.7 352.0 L 160.0 352.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="225.9" y="324.8" width="254.8" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="353.33333333333337" y="336.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">201 Payment PENDING + checkout_url</text>
+<path d="M 160.0 410.0 L 933.3 410.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="350.9" y="382.8" width="391.6" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="546.6666666666667" y="394.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">chuyển tới trang cổng, chọn ngân hàng, bấm thanh toán</text>
+<path d="M 933.3 468.0 L 546.7 468.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="529.8" y="440.8" width="420.4" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="452.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">POST /webhooks/payment (IPN) + X-Sandbox-Signature (HMAC)</text>
+<rect x="560.6666666666667" y="512" width="470" height="146" rx="6" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="574.6666666666667" y="532.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="start" dominant-baseline="middle">kiểm tra chữ ký (compare_digest), số tiền khớp</text>
+<text x="574.6666666666667" y="558.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="start" dominant-baseline="middle">PaymentEvent(event_id unique) — trùng → duplicate</text>
+<text x="574.6666666666667" y="584.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="start" dominant-baseline="middle">khóa Payment + Invoice, PENDING → SUCCEEDED</text>
+<text x="574.6666666666667" y="610.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="start" dominant-baseline="middle">paid_amount += amount → PARTIALLY_PAID / PAID</text>
+<text x="574.6666666666667" y="636.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="start" dominant-baseline="middle">audit + thông báo Finance và Supplier</text>
+<path d="M 546.7 698.0 L 1320.0 698.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="906.7" y="670.8" width="53.2" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="933.3333333333334" y="682.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">COMMIT</text>
+<path d="M 933.3 756.0 L 160.0 756.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="322.1" y="728.8" width="449.2" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="546.6666666666667" y="740.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">302 về /invoices?payment=…&amp;status=SUCCEEDED (chỉ để hiển thị)</text>
+<path d="M 933.3 814.0 L 546.7 814.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="511.8" y="786.8" width="456.4" height="22.5" fill="#fff" opacity="0.92"/>
+<text x="740.0" y="798.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">gửi lại cùng event_id → 200 {duplicate: true}, không đổi số dư</text></svg>

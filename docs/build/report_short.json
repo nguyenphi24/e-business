@@ -1,0 +1,12 @@
+{
+  "output": "report/01_De_cuong_bao_cao_short.docx",
+  "baseDir": "..",
+  "title": "Đề cương báo cáo B2B E-Procurement (bản rút gọn)",
+  "toc": false,
+  "lineSpacing": 288,
+  "parts": [
+    {
+      "file": "report/01_De_cuong_bao_cao_short.md"
+    }
+  ]
+}

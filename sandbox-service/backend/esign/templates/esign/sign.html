@@ -1,0 +1,31 @@
+{% extends "sandbox/base.html" %}
+{% block title %}Ký số{% endblock %}
+{% block brand_color %}#7c3aed{% endblock %}
+{% block heading %}SandboxSign — Ký số từ xa giả lập{% endblock %}
+{% block subheading %}Mô phỏng dịch vụ chữ ký số từ xa: xác nhận bằng OTP, ký bằng chứng thư do CA giả lập cấp{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="row"><span class="label">Tài liệu</span><strong>{{ sign_request.document_label }}</strong></div>
+  <div class="row"><span class="label">Người ký</span><span>{{ sign_request.signer_name }} — MST {{ sign_request.signer_tax_code }}</span></div>
+  <div class="row"><span class="label">Mã băm SHA-256</span><span class="mono">{{ sign_request.document_hash }}</span></div>
+  <div class="row"><span class="label">Hết hạn</span><span>{{ sign_request.expires_at|date:"H:i d/m/Y" }}</span></div>
+</div>
+{% if sign_request.status == "PENDING" %}
+<div class="card notice">Tin nhắn OTP (giả lập) gửi tới số điện thoại đăng ký: <strong class="mono">{{ sign_request.otp }}</strong></div>
+<form class="card" method="post">
+  {% csrf_token %}
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <label class="label" for="otp">Nhập OTP để ký</label><br>
+  <input id="otp" name="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
+  <div class="actions">
+    <button class="primary" name="action" value="sign">Ký số</button>
+    <button class="ghost" name="action" value="reject">Từ chối ký</button>
+  </div>
+</form>
+{% elif sign_request.status == "SIGNED" %}
+<div class="card ok">Đã ký lúc {{ sign_request.signed_at|date:"H:i d/m/Y" }}. Kết quả đã được gửi về ProcureHub — bạn có thể đóng trang này.</div>
+<div class="card"><div class="label">Chữ ký (base64)</div><div class="mono">{{ sign_request.signature }}</div></div>
+{% else %}
+<div class="card error">Yêu cầu ký đã kết thúc: <strong>{{ sign_request.status }}</strong>.</div>
+{% endif %}
+{% endblock %}

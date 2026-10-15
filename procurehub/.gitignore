@@ -1,0 +1,14 @@
+.venv/
+.venv*/
+__pycache__/
+*.pyc
+db.sqlite3
+.env
+.env.registry
+deploy/.env.prod
+deploy/.env.registry
+node_modules/
+.next/
+dist/
+.vite/
+*.tsbuildinfo

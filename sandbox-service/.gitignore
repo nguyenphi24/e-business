@@ -1,0 +1,44 @@
+# ===== Build =====
+build/
+dist/
+target/
+node_modules/
+.gradle/
+.kotlin/
+bin/
+out/
+__pycache__/
+*.py[cod]
+.venv*/
+venv/
+staticfiles/
+
+# ===== Bí mật — KHÔNG BAO GIỜ commit =====
+# .env chỉ có một bản, ở root (standard/repo-layout.md mục ".env cục bộ").
+# Thêm dòng riêng (vd. frontend/.env) CHỈ khi rơi vào một trong ba ngoại lệ
+# ghi ở đó — đừng thêm "cho chắc".
+.env
+# .env.registry ở ROOT là bản của build.sh (máy dev, cần quyền PUSH lên
+# registry) — khác deploy/.env.registry (production, chỉ cần quyền PULL,
+# xem README.md mục "Build & deploy"). Hai file, hai token, KHÔNG dùng
+# chung một dòng gitignore vì pattern có "/" chỉ khớp đúng path đó.
+.env.registry
+# .env.sync (root) — dùng bởi sync-deploy.sh, cũng chạy ở máy dev. Không
+# nằm trong deploy/ vì không script nào trên server cần tới nó.
+.env.sync
+deploy/.env.prod
+deploy/.env.registry
+
+# ===== Dữ liệu runtime =====
+data/
+postgres/
+media/
+logs/
+deploy/logs/
+deploy/media/
+
+# ===== IDE / OS =====
+.idea/
+*.iml
+.vscode/
+.DS_Store

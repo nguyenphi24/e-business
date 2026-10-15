@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Sandbox{% endblock %} · Sandbox giả lập</title>
+<style>
+  :root { --ink: #1f2937; --muted: #6b7280; --line: #e5e7eb; --brand: {% block brand_color %}#0f766e{% endblock %}; --warn: #b45309; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: #f3f4f6; }
+  .sandbox-banner { background: #fef3c7; color: var(--warn); text-align: center; padding: 8px 16px; font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+  header { background: var(--brand); color: #fff; padding: 18px 24px; }
+  header h1 { margin: 0; font-size: 20px; }
+  header p { margin: 4px 0 0; opacity: .85; font-size: 14px; }
+  main { max-width: 760px; margin: 24px auto; padding: 0 16px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .row { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .label { color: var(--muted); }
+  .amount { font-size: 28px; font-weight: 700; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  button, .button { border: 0; border-radius: 8px; padding: 10px 16px; font-size: 15px; cursor: pointer; text-decoration: none; display: inline-block; }
+  .primary { background: var(--brand); color: #fff; }
+  .danger { background: #dc2626; color: #fff; }
+  .ghost { background: #e5e7eb; color: var(--ink); }
+  .notice { background: #ecfeff; border: 1px solid #a5f3fc; border-radius: 8px; padding: 12px; font-size: 14px; }
+  .error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; border-radius: 8px; padding: 12px; }
+  .ok { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 8px; padding: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 6px; text-align: left; }
+  th { background: #f9fafb; }
+  td.num, th.num { text-align: right; }
+  code, .mono { font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+  input, select { font-size: 15px; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px; }
+  .watermark { position: relative; overflow: hidden; }
+  .watermark::after { content: "GIẢ LẬP"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 96px; font-weight: 800; color: rgba(220, 38, 38, .08); transform: rotate(-20deg); pointer-events: none; }
+  @media (max-width: 560px) { .row { flex-direction: column; gap: 2px; } .amount { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="sandbox-banner">MÔI TRƯỜNG GIẢ LẬP (SANDBOX) — không có giá trị pháp lý, không có giao dịch tiền thật</div>
+<header><h1>{% block heading %}{% endblock %}</h1><p>{% block subheading %}{% endblock %}</p></header>
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>

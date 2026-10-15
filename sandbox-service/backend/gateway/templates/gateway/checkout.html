@@ -1,0 +1,31 @@
+{% extends "sandbox/base.html" %}
+{% load humanize_vnd %}
+{% block title %}Cổng thanh toán{% endblock %}
+{% block brand_color %}#1d4ed8{% endblock %}
+{% block heading %}SandboxPay — Cổng thanh toán giả lập{% endblock %}
+{% block subheading %}Mô phỏng cổng thanh toán nội địa: chọn ngân hàng và kết quả giao dịch{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="label">Số tiền thanh toán</div>
+  <div class="amount">{{ transaction.amount|vnd }} {{ transaction.currency }}</div>
+  <div class="row"><span class="label">Nội dung</span><span>{{ transaction.description|default:"—" }}</span></div>
+  <div class="row"><span class="label">Mã tham chiếu merchant</span><span class="mono">{{ transaction.merchant_ref }}</span></div>
+  <div class="row"><span class="label">Mã giao dịch cổng</span><span class="mono">{{ transaction.id }}</span></div>
+</div>
+{% if transaction.status == "PENDING" %}
+<form class="card" method="post">
+  {% csrf_token %}
+  <label for="bank" class="label">Ngân hàng / phương thức</label><br>
+  <select id="bank" name="bank">{% for code, name in banks %}<option value="{{ code }}">{{ name }}</option>{% endfor %}</select>
+  <p class="notice">Đây là cổng giả lập: chọn kết quả bạn muốn mô phỏng. Cổng sẽ gửi IPN có chữ ký về ProcureHub rồi đưa bạn quay lại trang hóa đơn.</p>
+  <div class="actions">
+    <button class="primary" name="action" value="pay">Thanh toán thành công</button>
+    <button class="danger" name="action" value="fail">Giao dịch thất bại</button>
+    <button class="ghost" name="action" value="cancel">Hủy</button>
+  </div>
+</form>
+{% else %}
+<div class="card {% if transaction.status == 'SUCCEEDED' %}ok{% else %}error{% endif %}">Giao dịch đã kết thúc với trạng thái <strong>{{ transaction.status }}</strong>.</div>
+<a class="button ghost" href="{{ transaction.return_url }}">Quay lại ProcureHub</a>
+{% endif %}
+{% endblock %}

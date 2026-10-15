@@ -1,0 +1,54 @@
+name: procurehub
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PROCUREHUB_DB_NAME:-procurehub}
+      POSTGRES_USER: ${PROCUREHUB_DB_USER:-procurehub}
+      POSTGRES_PASSWORD: ${PROCUREHUB_DB_PASSWORD:?PROCUREHUB_DB_PASSWORD is required}
+    volumes:
+      - procurehub_db_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PROCUREHUB_DB_USER:-procurehub} -d ${PROCUREHUB_DB_NAME:-procurehub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - procurehub-net
+
+  app:
+    image: ${PROCUREHUB_IMAGE:?run deploy.prod.sh with an immutable image tag}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      SANDBOX_WEBHOOK_SECRET: ${SANDBOX_WEBHOOK_SECRET:?SANDBOX_WEBHOOK_SECRET is required}
+      SANDBOX_BASE_URL: ${SANDBOX_BASE_URL:-}
+      SANDBOX_API_KEY: ${SANDBOX_API_KEY:-}
+      CALLBACK_BASE_URL: ${CALLBACK_BASE_URL:-}
+      FRONTEND_URL: ${FRONTEND_URL:-}
+      PAYMENT_SANDBOX_ENABLED: ${PAYMENT_SANDBOX_ENABLED:-false}
+      DEBUG: ${DEBUG:-false}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:?ALLOWED_HOSTS is required}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:?CORS_ALLOWED_ORIGINS is required}
+      DATABASE_NAME: ${PROCUREHUB_DB_NAME:-procurehub}
+      DATABASE_USER: ${PROCUREHUB_DB_USER:-procurehub}
+      DATABASE_PASSWORD: ${PROCUREHUB_DB_PASSWORD:?PROCUREHUB_DB_PASSWORD is required}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: "5432"
+    ports:
+      - "127.0.0.1:${PROCUREHUB_HOST_PORT:-8080}:8080"
+    networks:
+      - procurehub-net
+
+networks:
+  procurehub-net:
+    name: procurehub-net
+
+volumes:
+  procurehub_db_prod_data:
+    name: procurehub_db_prod_data

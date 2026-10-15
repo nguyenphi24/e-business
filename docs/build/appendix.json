@@ -1,0 +1,26 @@
+{
+  "output": "report/02_Phu_luc_URD_SRS_HLD.docx",
+  "baseDir": "..",
+  "title": "Phụ lục kỹ thuật B2B E-Procurement",
+  "parts": [
+    {
+      "file": "report/02_Phu_luc.md"
+    },
+    {
+      "file": "specs/01_URD.md",
+      "appendix": "A"
+    },
+    {
+      "file": "specs/02_SRS.md",
+      "appendix": "B"
+    },
+    {
+      "file": "specs/03_HLD.md",
+      "appendix": "C"
+    },
+    {
+      "file": "specs/04_Test_Demo.md",
+      "appendix": "D"
+    }
+  ]
+}

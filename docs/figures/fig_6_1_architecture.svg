@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="820" viewBox="0 0 1480 820"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker><marker id="arrow-start" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker></defs><rect width="100%" height="100%" fill="#fff"/><rect x="40" y="24" width="300" height="56" rx="10" fill="#eef3fb" stroke="#1f3864" stroke-width="2"/>
+<text x="190.0" y="52.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Buyer · Manager · Finance</text>
+<rect x="40" y="96" width="300" height="56" rx="10" fill="#eef3fb" stroke="#1f3864" stroke-width="2"/>
+<text x="190.0" y="124.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Supplier (nhà cung cấp)</text>
+<rect x="24" y="190" width="332" height="400" rx="14" fill="#f3f6fb" stroke="#8fa3c7" stroke-width="2"/>
+<text x="190" y="214.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Trình duyệt</text>
+<rect x="44" y="236" width="292" height="330" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="190" y="262.0" font-family="Times New Roman, Times, serif" font-size="20" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Web SPA</text>
+<text x="190" y="290.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Vite + React 19 + Ant Design</text>
+<rect x="66" y="312" width="248" height="40" rx="10" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="190.0" y="332.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Buyer Portal</text>
+<rect x="66" y="364" width="248" height="40" rx="10" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="190.0" y="384.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Supplier Portal</text>
+<rect x="66" y="416" width="248" height="40" rx="10" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="190.0" y="436.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Finance · Hóa đơn</text>
+<text x="190" y="486.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Access token chỉ trong bộ nhớ</text>
+<text x="190" y="510.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Refresh token: cookie httpOnly</text>
+<text x="190" y="534.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Nhận SSE bằng fetch streaming</text>
+<path d="M 190.0 152.0 L 190.0 190.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="410" y="330" width="150" height="110" rx="10" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="485.0" y="365.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">nginx</text>
+<text x="485.0" y="385.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">HTTPS / TLS</text>
+<text x="485.0" y="404.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">reverse proxy</text>
+<path d="M 356.0 360.0 L 410.0 360.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="365.5" y="332.2" width="35.0" height="19.5" fill="#fff" opacity="0.92"/>
+<text x="383" y="342.0" font-family="Times New Roman, Times, serif" font-size="13" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">REST</text>
+<path d="M 410.0 412.0 L 356.0 412.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+<rect x="368.6" y="420.2" width="28.7" height="19.5" fill="#fff" opacity="0.92"/>
+<text x="383" y="430.0" font-family="Times New Roman, Times, serif" font-size="13" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">SSE</text>
+<rect x="610" y="120" width="520" height="560" rx="14" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="870.0" y="148.0" font-family="Times New Roman, Times, serif" font-size="20" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">API — Django 5.2 + DRF (gunicorn gthread)</text>
+<text x="870.0" y="174.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Modular monolith · REST /api/v1 · SSE · Webhook</text>
+<rect x="630" y="194" width="480" height="50" rx="10" fill="#eef3fb" stroke="#1f3864" stroke-width="2"/>
+<text x="870.0" y="219.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">RequestId → JWT Auth → RBAC → Tenant Guard (company scope)</text>
+<rect x="630" y="266" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="745" y="294.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">identity</text>
+<text x="745" y="320.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">User, Company, vai trò</text>
+<rect x="880" y="266" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="995" y="294.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">suppliers</text>
+<text x="995" y="320.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Quan hệ NCC, đánh giá</text>
+<rect x="630" y="362" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="745" y="390.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">procurement</text>
+<text x="745" y="416.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">PR, RFQ, báo giá, chấm điểm</text>
+<rect x="880" y="362" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="995" y="390.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">purchase_orders</text>
+<text x="995" y="416.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">PO, giao nhận</text>
+<rect x="630" y="458" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="745" y="486.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">billing</text>
+<text x="745" y="512.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Hóa đơn VAT, thanh toán, HĐĐT</text>
+<rect x="880" y="458" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="995" y="486.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">notifications</text>
+<text x="995" y="512.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Inbox, người nhận, SSE</text>
+<rect x="630" y="554" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="745" y="582.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">audit</text>
+<text x="745" y="608.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Audit log, request ID</text>
+<rect x="880" y="554" width="230" height="80" rx="8" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<text x="995" y="582.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">dashboard + integrations</text>
+<text x="995" y="608.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">KPI · adapter, webhook, ký số</text>
+<path d="M 560.0 360.0 L 610.0 360.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 610.0 412.0 L 560.0 412.0" fill="none" stroke="#1f3864" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+<path d="M 1230 348 a 100 18 0 0 1 200 0 v 130 a 100 18 0 0 1 -200 0 z" fill="#f7f9fd" stroke="#1f3864" stroke-width="2"/>
+<path d="M 1230 348 a 100 18 0 0 0 200 0" fill="none" stroke="#1f3864" stroke-width="2"/>
+<text x="1330" y="382.0" font-family="Times New Roman, Times, serif" font-size="18" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">PostgreSQL 16</text>
+<text x="1330" y="421.2" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">Shared schema, có company</text>
+<text x="1330" y="438.0" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">notifications = outbox</text>
+<text x="1330" y="454.8" font-family="Times New Roman, Times, serif" font-size="14" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">transaction + khóa dòng</text>
+<path d="M 1130.0 400.0 L 1230.0 400.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)" marker-start="url(#arrow-start)"/>
+<rect x="1190" y="110" width="270" height="200" rx="12" fill="#fff4d6" stroke="#d4a017" stroke-width="2"/>
+<text x="1325" y="134.0" font-family="Times New Roman, Times, serif" font-size="17" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">sandbox-service (giả lập)</text>
+<rect x="1205" y="152" width="240" height="40" rx="10" fill="#fff" stroke="#d4a017" stroke-width="2"/>
+<text x="1325.0" y="172.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Cổng thanh toán + IPN</text>
+<rect x="1205" y="202" width="240" height="40" rx="10" fill="#fff" stroke="#d4a017" stroke-width="2"/>
+<text x="1325.0" y="222.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Hóa đơn điện tử + CQT cấp mã</text>
+<rect x="1205" y="252" width="240" height="40" rx="10" fill="#fff" stroke="#d4a017" stroke-width="2"/>
+<text x="1325.0" y="272.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Ký số từ xa + CA (OTP)</text>
+<path d="M 1130.0 180.0 L 1190.0 180.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1133.2" y="154.2" width="53.7" height="19.5" fill="#fff" opacity="0.92"/>
+<text x="1160" y="164.0" font-family="Times New Roman, Times, serif" font-size="13" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">API key</text>
+<path d="M 1190.0 260.0 L 1130.0 260.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="1114.4" y="268.2" width="91.1" height="19.5" fill="#fff" opacity="0.92"/>
+<text x="1160" y="278.0" font-family="Times New Roman, Times, serif" font-size="13" font-weight="normal" fill="#5b6b82" text-anchor="middle" dominant-baseline="middle">callback HMAC</text>
+<rect x="1210" y="560" width="240" height="120" rx="10" fill="#fff" stroke="#5b6b82" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="1330.0" y="593.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Mở rộng P2</text>
+<text x="1330.0" y="611.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Email · ERP/kế toán</text>
+<text x="1330.0" y="629.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Nhà cung cấp thật</text>
+<text x="1330.0" y="647.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">(thanh toán, HĐĐT, ký số) · AI</text>
+<path d="M 1130.0 620.0 L 1210.0 620.0" fill="none" stroke="#5b6b82" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+<rect x="24" y="712" width="1426" height="84" rx="4" fill="#fff4d6" stroke="#d4a017" stroke-width="2"/>
+<text x="737" y="738.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Mũi tên liền: REST có Bearer JWT; mũi tên đứt: luồng SSE /notifications/stream (server → client, đóng sau 25 giây, client nối lại với id cuối).</text>
+<text x="737" y="768.0" font-family="Times New Roman, Times, serif" font-size="15" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Nhà cung cấp ngoài gọi qua adapter (đổi sang dịch vụ thật chỉ thay adapter); mọi kết quả về bằng callback ký HMAC, chữ ký số xác minh bằng khóa CA đã ghim.</text></svg>

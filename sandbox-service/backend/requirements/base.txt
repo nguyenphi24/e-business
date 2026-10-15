@@ -1,0 +1,5 @@
+Django==5.2.9
+djangorestframework==3.16.1
+python-dotenv==1.2.1
+django-prometheus==2.5.0
+cryptography==50.0.2

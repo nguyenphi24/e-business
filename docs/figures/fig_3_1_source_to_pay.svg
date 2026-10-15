@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="626" viewBox="0 0 1520 626"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker><marker id="arrow-start" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1f3864"/></marker></defs><rect width="100%" height="100%" fill="#fff"/><rect x="4" y="20" width="1512" height="128" fill="#f3f6fb" stroke="#8fa3c7" stroke-width="2"/>
+<rect x="4" y="20" width="132" height="128" fill="#dbe4f3" stroke="#8fa3c7" stroke-width="2"/>
+<text x="70.0" y="71.4" font-family="Times New Roman, Times, serif" font-size="21" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Nhà</text>
+<text x="70.0" y="96.6" font-family="Times New Roman, Times, serif" font-size="21" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">cung cấp</text>
+<rect x="4" y="148" width="1512" height="128" fill="#f3f6fb" stroke="#8fa3c7" stroke-width="2"/>
+<rect x="4" y="148" width="132" height="128" fill="#dbe4f3" stroke="#8fa3c7" stroke-width="2"/>
+<text x="70.0" y="212.0" font-family="Times New Roman, Times, serif" font-size="21" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Manager</text>
+<rect x="4" y="276" width="1512" height="128" fill="#f3f6fb" stroke="#8fa3c7" stroke-width="2"/>
+<rect x="4" y="276" width="132" height="128" fill="#dbe4f3" stroke="#8fa3c7" stroke-width="2"/>
+<text x="70.0" y="340.0" font-family="Times New Roman, Times, serif" font-size="21" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Buyer</text>
+<rect x="4" y="404" width="1512" height="128" fill="#f3f6fb" stroke="#8fa3c7" stroke-width="2"/>
+<rect x="4" y="404" width="132" height="128" fill="#dbe4f3" stroke="#8fa3c7" stroke-width="2"/>
+<text x="70.0" y="468.0" font-family="Times New Roman, Times, serif" font-size="21" font-weight="bold" fill="#111" text-anchor="middle" dominant-baseline="middle">Finance</text>
+<rect x="146" y="298.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="202.0" y="320.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Tạo PR</text>
+<text x="202.0" y="340.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">(ngân sách</text>
+<text x="202.0" y="359.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">ước tính)</text>
+<rect x="270" y="170.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="326.0" y="212.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Duyệt PR</text>
+<rect x="394" y="298.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="450.0" y="320.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Lập RFQ,</text>
+<text x="450.0" y="340.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">trọng số,</text>
+<text x="450.0" y="359.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">mời ≥ 2 NCC</text>
+<rect x="518" y="42.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="574.0" y="64.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Gửi / sửa</text>
+<text x="574.0" y="84.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">báo giá</text>
+<text x="574.0" y="103.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">trước hạn</text>
+<rect x="642" y="298.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="698.0" y="320.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Bảng điểm,</text>
+<text x="698.0" y="340.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">đề xuất NCC</text>
+<text x="698.0" y="359.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">+ lý do</text>
+<rect x="766" y="170.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="822.0" y="202.4" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Duyệt</text>
+<text x="822.0" y="221.6" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">lựa chọn</text>
+<rect x="890" y="298.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="946.0" y="320.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Phát hành PO</text>
+<text x="946.0" y="340.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">(khóa giá,</text>
+<text x="946.0" y="359.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Net N)</text>
+<rect x="1014" y="42.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="1070.0" y="74.4" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Xác nhận /</text>
+<text x="1070.0" y="93.6" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">từ chối PO</text>
+<rect x="1138" y="298.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="1194.0" y="330.4" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Nhận hàng,</text>
+<text x="1194.0" y="349.6" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">đánh giá NCC</text>
+<rect x="1262" y="42.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="1318.0" y="74.4" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Lập hóa đơn</text>
+<text x="1318.0" y="93.6" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">(hạn = Net N)</text>
+<rect x="1386" y="426.0" width="112" height="84" rx="10" fill="#fff" stroke="#1f3864" stroke-width="2"/>
+<text x="1442.0" y="448.8" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Thanh toán</text>
+<text x="1442.0" y="468.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">sandbox</text>
+<text x="1442.0" y="487.2" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">(nhiều lần)</text>
+<path d="M 258.0 340.0 L 326.0 340.0 L 326.0 254.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 382.0 212.0 L 450.0 212.0 L 450.0 298.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 506.0 340.0 L 574.0 340.0 L 574.0 126.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 630.0 84.0 L 698.0 84.0 L 698.0 298.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 754.0 340.0 L 822.0 340.0 L 822.0 254.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 878.0 212.0 L 946.0 212.0 L 946.0 298.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 1002.0 340.0 L 1070.0 340.0 L 1070.0 126.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 1126.0 84.0 L 1194.0 84.0 L 1194.0 298.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 1250.0 340.0 L 1318.0 340.0 L 1318.0 126.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 1374.0 84.0 L 1442.0 84.0 L 1442.0 426.0" fill="none" stroke="#1f3864" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="146" y="556" width="1360" height="52" rx="4" fill="#fff4d6" stroke="#d4a017" stroke-width="2"/>
+<text x="826.0" y="582.0" font-family="Times New Roman, Times, serif" font-size="16" font-weight="normal" fill="#111" text-anchor="middle" dominant-baseline="middle">Thông báo realtime (SSE) ở mỗi bước chuyển trạng thái  •  Audit log kèm request ID  •  Tách quyền: người tạo/đề xuất không tự duyệt  •  Thanh toán sandbox, không giữ tiền</text></svg>

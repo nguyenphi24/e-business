@@ -1,0 +1,25 @@
+# Bí mật — không bao giờ commit (mỗi project có .env riêng ở thư mục gốc của project)
+.env
+.env.registry
+.env.sync
+**/deploy/.env.prod
+**/deploy/.env.registry
+
+# Môi trường và phụ thuộc
+.venv*/
+venv/
+node_modules/
+
+# Build, cache, dữ liệu cục bộ
+__pycache__/
+*.py[cod]
+dist/
+.next*/
+*.tsbuildinfo
+staticfiles/
+db.sqlite3
+sandbox-service/data/
+
+# Hệ điều hành / Office
+.DS_Store
+~$*
