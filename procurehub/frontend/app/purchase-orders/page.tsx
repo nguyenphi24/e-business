@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, Button, Form, Input, InputNumber, Modal, Rate, Space, Table, Tag, message } from "antd";
-import { CheckOutlined, CloseOutlined, FileDoneOutlined, ReloadOutlined, StarOutlined, StopOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CheckOutlined, ClockCircleOutlined, CloseOutlined, DollarOutlined, FileDoneOutlined, ReloadOutlined, ShoppingOutlined, StarOutlined, StopOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 import AppShell from "@/components/app-shell";
@@ -61,7 +61,12 @@ export default function PurchaseOrdersPage() {
 
   function openDelivery(order: PurchaseOrder) {
     setDeliveryOrder(order);
-    deliveryForm.setFieldsValue({ lines: order.lines.map((line) => ({ po_line_id: line.id })) });
+    deliveryForm.setFieldsValue({
+      lines: order.lines.map((line) => ({
+        po_line_id: line.id,
+        delivered_quantity: Math.max(0, Number(line.quantity) - Number(line.delivered_quantity)),
+      })),
+    });
   }
 
   async function submitDelivery(values: { lines: Array<{ po_line_id: number; delivered_quantity?: number }> }) {
@@ -121,42 +126,52 @@ export default function PurchaseOrdersPage() {
     }
   }
 
+  const activePoCount = orders.filter((item) => ["ISSUED", "ACKNOWLEDGED", "PARTIALLY_DELIVERED", "DELIVERED"].includes(item.status)).length;
+  const completedPoCount = orders.filter((item) => item.status === "COMPLETED").length;
+  const totalPoValue = orders.reduce((sum, item) => sum + Number(item.total ?? 0), 0);
+
   return <AppShell>
-    <div className="topbar"><div><p className="eyebrow">Order management</p><h1 className="page-title">Purchase Orders</h1><p className="page-subtitle">Theo dõi phát hành, xác nhận, giao hàng, hóa đơn và đánh giá nhà cung cấp.</p></div><Button icon={<ReloadOutlined />} onClick={() => void load()}>Làm mới</Button></div>
+    <div className="topbar"><div><p className="eyebrow">Quản lý đơn hàng</p><h1 className="page-title">Đơn đặt hàng (PO)</h1><p className="page-subtitle">Theo dõi phát hành đơn hàng, xác nhận từ nhà cung cấp, tiến độ giao nhận, hóa đơn và đánh giá sau mua.</p></div><Button icon={<ReloadOutlined />} onClick={() => void load()}>Làm mới</Button></div>
+    <div className="fin-page-stats">
+      <div className="fin-mini-stat"><div className="fin-mini-icon blue"><ShoppingOutlined /></div><div className="fin-mini-meta"><span>Tổng đơn hàng PO</span><strong>{orders.length}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon pink"><ClockCircleOutlined /></div><div className="fin-mini-meta"><span>Đang thực hiện</span><strong>{activePoCount}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon green"><CheckCircleOutlined /></div><div className="fin-mini-meta"><span>Đã hoàn tất</span><strong>{completedPoCount}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon gold"><DollarOutlined /></div><div className="fin-mini-meta"><span>Tổng giá trị PO</span><strong>{formatMoney(String(totalPoValue))}</strong></div></div>
+    </div>
     {error && <Alert message={error} type="error" showIcon closable onClose={() => setError(null)} style={{ marginBottom: 20 }} />}
-    <div className="panel"><Table loading={loading} dataSource={orders} rowKey="id" pagination={{ pageSize: 10 }} expandable={{ expandedRowRender: (order) => <Table size="small" pagination={false} rowKey="id" dataSource={order.lines} columns={[{ title: "Hạng mục", dataIndex: "description" }, { title: "SL", dataIndex: "quantity" }, { title: "Đã giao", dataIndex: "delivered_quantity" }, { title: "Đơn giá", dataIndex: "unit_price", render: (value: string) => `${Number(value).toLocaleString("vi-VN")} ₫` }]} /> }} columns={[
-      { title: "Mã PO", dataIndex: "number" },
+    <div className="panel"><Table loading={loading} dataSource={orders} rowKey="id" pagination={{ pageSize: 10 }} expandable={{ expandedRowRender: (order) => <Table size="small" pagination={false} rowKey="id" dataSource={order.lines} columns={[{ title: "Hạng mục hàng hóa", dataIndex: "description" }, { title: "Số lượng đặt", dataIndex: "quantity" }, { title: "Đã giao", dataIndex: "delivered_quantity" }, { title: "Đơn giá", dataIndex: "unit_price", render: (value: string) => `${Number(value).toLocaleString("vi-VN")} ₫` }]} /> }} columns={[
+      { title: "Mã đơn PO", dataIndex: "number" },
       { title: "Nhà cung cấp", render: (_, item) => item.supplier.legal_name },
-      { title: "Tổng", dataIndex: "total", render: (value: string) => formatMoney(value) },
-      { title: "Công nợ", dataIndex: "payment_term_days", render: (value: number) => `Net ${value}` },
+      { title: "Tổng tiền (chưa VAT)", dataIndex: "total", render: (value: string) => formatMoney(value) },
+      { title: "Hạn công nợ", dataIndex: "payment_term_days", render: (value: number) => `Trả chậm ${value} ngày` },
       { title: "Hóa đơn", key: "invoice", render: (_, order) => order.invoice ? <Tag color={order.invoice.status === "PAID" ? "green" : order.invoice.is_overdue ? "red" : "gold"}>{order.invoice.number} · {invoiceLabels[order.invoice.status] ?? order.invoice.status}</Tag> : "—" },
       { title: "Trạng thái", dataIndex: "status", render: (value: string) => <Tag color={value === "COMPLETED" ? "green" : value === "DECLINED" || value === "CANCELLED" ? "red" : "blue"}>{labels[value] ?? value}</Tag> },
       { title: "Thao tác", key: "actions", render: (_, order) => <Space size="small" wrap>
         {supplierView && ["DELIVERED", "COMPLETED"].includes(order.status) && !order.invoice && <Button type="link" icon={<FileDoneOutlined />} loading={actionLoading === `invoice-${order.id}`} onClick={() => void issueInvoice(order)}>Lập hóa đơn</Button>}
         {canEvaluate && order.status === "COMPLETED" && !order.evaluation && <Button type="link" icon={<StarOutlined />} onClick={() => { evaluationForm.resetFields(); setEvaluationOrder(order); }}>Đánh giá NCC</Button>}
-        {order.evaluation && <Tag color="purple">Đánh giá {((order.evaluation.quality_score + order.evaluation.delivery_score) / 2).toFixed(1)}/5</Tag>}
+        {order.evaluation && <Tag color="purple">Điểm NCC: {((order.evaluation.quality_score + order.evaluation.delivery_score) / 2).toFixed(1)}/5</Tag>}
         {canOperate && order.status === "DRAFT" && <Button type="link" loading={actionLoading === `issue-${order.id}`} onClick={() => void transition(order, "issue")}>Phát hành</Button>}
-        {supplierView && order.status === "ISSUED" && <Button type="link" icon={<CheckOutlined />} loading={actionLoading === `acknowledge-${order.id}`} onClick={() => void transition(order, "acknowledge")}>Xác nhận</Button>}
+        {supplierView && order.status === "ISSUED" && <Button type="link" icon={<CheckOutlined />} loading={actionLoading === `acknowledge-${order.id}`} onClick={() => void transition(order, "acknowledge")}>Xác nhận đơn</Button>}
         {supplierView && order.status === "ISSUED" && <Button type="link" danger icon={<CloseOutlined />} onClick={() => { declineForm.resetFields(); setDeclineOrder(order); }}>Từ chối</Button>}
         {canOperate && ["ISSUED", "ACKNOWLEDGED", "PARTIALLY_DELIVERED"].includes(order.status) && <Button type="link" onClick={() => openDelivery(order)}>Ghi nhận giao hàng</Button>}
-        {canOperate && order.status === "DELIVERED" && <Button type="link" loading={actionLoading === `complete-${order.id}`} onClick={() => void transition(order, "complete")}>Hoàn tất</Button>}
-        {canCancel && ["DRAFT", "ISSUED", "ACKNOWLEDGED"].includes(order.status) && <Button type="link" danger icon={<StopOutlined />} loading={actionLoading === `cancel-${order.id}`} onClick={() => void transition(order, "cancel")}>Hủy PO</Button>}
+        {canOperate && order.status === "DELIVERED" && <Button type="link" loading={actionLoading === `complete-${order.id}`} onClick={() => void transition(order, "complete")}>Nghiệm thu hoàn tất</Button>}
+        {canCancel && ["DRAFT", "ISSUED", "ACKNOWLEDGED"].includes(order.status) && <Button type="link" danger icon={<StopOutlined />} loading={actionLoading === `cancel-${order.id}`} onClick={() => void transition(order, "cancel")}>Hủy đơn</Button>}
       </Space> },
     ]} /></div>
     <Modal title={deliveryOrder ? `Ghi nhận giao hàng · ${deliveryOrder.number}` : "Ghi nhận giao hàng"} open={Boolean(deliveryOrder)} footer={null} onCancel={() => setDeliveryOrder(null)} destroyOnHidden>
-      <Form form={deliveryForm} layout="vertical" onFinish={submitDelivery}><Form.List name="lines">{(fields) => fields.map((field) => { const line = deliveryOrder?.lines[field.name]; return <div className="delivery-row" key={field.key}><Form.Item {...field} name={[field.name, "po_line_id"]} hidden><InputNumber /></Form.Item><div className="delivery-line-label">{line?.description} · đã giao {line?.delivered_quantity}/{line?.quantity} {line?.unit}</div><Form.Item {...field} name={[field.name, "delivered_quantity"]} label="Giao thêm"><InputNumber min={0} /></Form.Item></div>; })}</Form.List><Button block htmlType="submit" type="primary">Lưu giao hàng</Button></Form>
+      <Form form={deliveryForm} layout="vertical" onFinish={submitDelivery}><Form.List name="lines">{(fields) => fields.map((field) => { const line = deliveryOrder?.lines[field.name]; return <div className="delivery-row" key={field.key}><Form.Item {...field} name={[field.name, "po_line_id"]} hidden><InputNumber /></Form.Item><div className="delivery-line-label"><strong>{line?.description}</strong><br />Đã giao {line?.delivered_quantity}/{line?.quantity} {line?.unit}</div><Form.Item {...field} name={[field.name, "delivered_quantity"]} label="Số lượng nhận thêm"><InputNumber min={0} style={{ width: 140 }} /></Form.Item></div>; })}</Form.List><Button block size="large" htmlType="submit" type="primary">Xác nhận nhận hàng</Button></Form>
     </Modal>
     <Modal title={evaluationOrder ? `Đánh giá nhà cung cấp · ${evaluationOrder.number}` : "Đánh giá nhà cung cấp"} open={Boolean(evaluationOrder)} footer={null} onCancel={() => setEvaluationOrder(null)} destroyOnHidden>
       <Form form={evaluationForm} layout="vertical" onFinish={submitEvaluation}>
-        <p>{evaluationOrder?.supplier.legal_name} — điểm này dùng làm tiêu chí uy tín khi chấm báo giá ở các RFQ sau.</p>
-        <Form.Item name="quality_score" label="Chất lượng" rules={[{ required: true, message: "Chọn điểm chất lượng." }]}><Rate /></Form.Item>
-        <Form.Item name="delivery_score" label="Giao hàng" rules={[{ required: true, message: "Chọn điểm giao hàng." }]}><Rate /></Form.Item>
-        <Form.Item name="comment" label="Nhận xét"><Input.TextArea rows={3} /></Form.Item>
-        <Button block htmlType="submit" type="primary">Lưu đánh giá</Button>
+        <p>{evaluationOrder?.supplier.legal_name} — kết quả đánh giá được lưu vào hồ sơ uy tín nhà cung cấp cho các kỳ đấu thầu tiếp theo.</p>
+        <Form.Item name="quality_score" label="Chất lượng hàng hóa" rules={[{ required: true, message: "Chọn điểm chất lượng." }]}><Rate /></Form.Item>
+        <Form.Item name="delivery_score" label="Tiến độ giao hàng" rules={[{ required: true, message: "Chọn điểm giao hàng." }]}><Rate /></Form.Item>
+        <Form.Item name="comment" label="Nhận xét chi tiết"><Input.TextArea rows={3} placeholder="Nhập nhận xét về chất lượng sản phẩm và thái độ phục vụ..." /></Form.Item>
+        <Button block size="large" htmlType="submit" type="primary">Lưu đánh giá</Button>
       </Form>
     </Modal>
-    <Modal title={declineOrder ? `Từ chối PO · ${declineOrder.number}` : "Từ chối PO"} open={Boolean(declineOrder)} footer={null} onCancel={() => setDeclineOrder(null)} destroyOnHidden>
-      <Form form={declineForm} layout="vertical" onFinish={decline}><Form.Item name="reason" label="Lý do từ chối" rules={[{ required: true, message: "Nhập lý do từ chối." }]}><Input.TextArea rows={4} /></Form.Item><Button block danger type="primary" htmlType="submit" loading={Boolean(actionLoading)}>Xác nhận từ chối</Button></Form>
+    <Modal title={declineOrder ? `Từ chối đơn hàng · ${declineOrder.number}` : "Từ chối đơn hàng"} open={Boolean(declineOrder)} footer={null} onCancel={() => setDeclineOrder(null)} destroyOnHidden>
+      <Form form={declineForm} layout="vertical" onFinish={decline}><Form.Item name="reason" label="Lý do từ chối" rules={[{ required: true, message: "Nhập lý do từ chối." }]}><Input.TextArea rows={4} /></Form.Item><Button block size="large" danger type="primary" htmlType="submit" loading={Boolean(actionLoading)}>Xác nhận từ chối</Button></Form>
     </Modal>
   </AppShell>;
 }

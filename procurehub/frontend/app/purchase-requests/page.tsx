@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs";
 import { Alert, Button, DatePicker, Form, Input, InputNumber, Modal, Space, Table, Tag } from "antd";
-import { CheckOutlined, CloseOutlined, EditOutlined, PlusOutlined, ReloadOutlined, SendOutlined, StopOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CheckOutlined, ClockCircleOutlined, CloseOutlined, EditOutlined, FileTextOutlined, PlusOutlined, ReloadOutlined, SendOutlined, StopOutlined, WalletOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 import AppShell from "@/components/app-shell";
@@ -92,7 +92,7 @@ export default function PurchaseRequestsPage() {
       form.resetFields();
       await load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Không lưu được Purchase Request.");
+      setError(err instanceof Error ? err.message : "Không lưu được yêu cầu mua hàng.");
     }
   }
 
@@ -102,7 +102,7 @@ export default function PurchaseRequestsPage() {
       await apiFetch(`/purchase-requests/${request.id}/${action}`, { method: "POST", body: JSON.stringify({}) });
       await load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Không cập nhật được Purchase Request.");
+      setError(err instanceof Error ? err.message : "Không cập nhật được yêu cầu mua hàng.");
     } finally {
       setActionLoading(null);
     }
@@ -130,18 +130,28 @@ export default function PurchaseRequestsPage() {
     }
   }
 
+  const pendingCount = items.filter((item) => item.status === "PENDING_APPROVAL").length;
+  const approvedCount = items.filter((item) => item.status === "APPROVED").length;
+  const totalBudget = items.reduce((sum, item) => sum + Number(item.estimated_budget ?? 0), 0);
+
   return <AppShell>
     <div className="topbar">
-      <div><p className="eyebrow">Source-to-Order</p><h1 className="page-title">Purchase Requests</h1><p className="page-subtitle">Tạo, gửi và phê duyệt yêu cầu mua hàng trong công ty.</p></div>
+      <div><p className="eyebrow">Quy trình mua sắm</p><h1 className="page-title">Yêu cầu mua hàng</h1><p className="page-subtitle">Tạo, gửi duyệt và phê duyệt các đề nghị mua sắm nội bộ trong doanh nghiệp.</p></div>
       <Space wrap><Button icon={<ReloadOutlined />} onClick={() => void load()}>Làm mới</Button><Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>Tạo yêu cầu</Button></Space>
+    </div>
+    <div className="fin-page-stats">
+      <div className="fin-mini-stat"><div className="fin-mini-icon blue"><FileTextOutlined /></div><div className="fin-mini-meta"><span>Tổng yêu cầu</span><strong>{items.length}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon pink"><ClockCircleOutlined /></div><div className="fin-mini-meta"><span>Chờ phê duyệt</span><strong>{pendingCount}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon green"><CheckCircleOutlined /></div><div className="fin-mini-meta"><span>Đã phê duyệt</span><strong>{approvedCount}</strong></div></div>
+      <div className="fin-mini-stat"><div className="fin-mini-icon gold"><WalletOutlined /></div><div className="fin-mini-meta"><span>Tổng ngân sách dự kiến</span><strong>{formatMoney(String(totalBudget))}</strong></div></div>
     </div>
     {error && <Alert message={error} type="error" showIcon closable onClose={() => setError(null)} style={{ marginBottom: 20 }} />}
     <div className="panel"><Table loading={loading} dataSource={items} rowKey="id" pagination={{ pageSize: 10 }} columns={[
       { title: "Mã yêu cầu", dataIndex: "number", key: "number" },
-      { title: "Mục đích", dataIndex: "purpose", key: "purpose" },
-      { title: "Cần trước", dataIndex: "needed_by", key: "needed_by" },
+      { title: "Mục đích mua sắm", dataIndex: "purpose", key: "purpose" },
+      { title: "Cần trước ngày", dataIndex: "needed_by", key: "needed_by" },
       { title: "Ngân sách ước tính", dataIndex: "estimated_budget", key: "estimated_budget", render: (value: string | null) => formatMoney(value) },
-      { title: "Người yêu cầu", key: "requester", render: (_, item) => item.requester.full_name },
+      { title: "Người đề nghị", key: "requester", render: (_, item) => item.requester.full_name },
       { title: "Trạng thái", dataIndex: "status", key: "status", render: (status: string) => <Tag color={status === "APPROVED" ? "green" : status === "REJECTED" ? "red" : status === "PENDING_APPROVAL" ? "orange" : "blue"}>{labels[status] ?? status}</Tag> },
       { title: "Thao tác", key: "actions", render: (_, request) => {
         const owner = request.requester.id === user?.id;
@@ -155,21 +165,24 @@ export default function PurchaseRequestsPage() {
         </Space>;
       }},
     ]} /></div>
-    <Modal title={editing ? `Sửa yêu cầu · ${editing.number}` : "Tạo Purchase Request"} open={open} footer={null} onCancel={() => setOpen(false)} destroyOnHidden>
+    <Modal title={editing ? `Chỉnh sửa yêu cầu · ${editing.number}` : "Tạo yêu cầu mua hàng mới"} open={open} footer={null} onCancel={() => setOpen(false)} destroyOnHidden>
       <Form form={form} layout="vertical" onFinish={submit}>
-        <Form.Item label="Mục đích" name="purpose" rules={[{ required: true, message: "Nhập mục đích." }]}><Input placeholder="Ví dụ: Thiết bị phòng họp" /></Form.Item>
-        <Form.Item label="Cần trước ngày" name="needed_by" rules={[{ required: true, message: "Chọn ngày cần hàng." }]}><DatePicker style={{ width: "100%" }} /></Form.Item>
-        <Form.Item label="Ngân sách ước tính (VND, không bắt buộc)" name="estimated_budget" extra="Dùng làm giá tham chiếu cho KPI tiết kiệm."><InputNumber min={0} step={1000000} style={{ width: "100%" }} /></Form.Item>
-        <Form.Item label="Mô tả hàng hóa" name="description" rules={[{ required: true, message: "Nhập mô tả." }]}><Input placeholder="Ví dụ: Màn hình 24 inch" /></Form.Item>
-        <Space.Compact block className="pr-inline-fields"><Form.Item label="Số lượng" name="quantity" rules={[{ required: true, message: "Nhập số lượng." }]} style={{ width: "50%" }}><InputNumber min={0.001} style={{ width: "100%" }} /></Form.Item><Form.Item label="Đơn vị" name="unit" rules={[{ required: true, message: "Nhập đơn vị." }]} style={{ width: "50%" }}><Input placeholder="cái" /></Form.Item></Space.Compact>
-        <Button block htmlType="submit" type="primary">{editing ? "Lưu thay đổi" : "Tạo yêu cầu"}</Button>
+        <Form.Item label="Mục đích mua sắm" name="purpose" rules={[{ required: true, message: "Nhập mục đích mua sắm." }]}><Input placeholder="Ví dụ: Trang bị thiết bị phòng họp tầng 5" /></Form.Item>
+        <Form.Item label="Cần trước ngày" name="needed_by" rules={[{ required: true, message: "Chọn ngày cần hàng." }]}><DatePicker placeholder="Chọn ngày cần nhận hàng" style={{ width: "100%" }} /></Form.Item>
+        <Form.Item label="Ngân sách ước tính (VND, không bắt buộc)" name="estimated_budget" extra="Dùng làm mức giá tham chiếu để tính chỉ số KPI tiết kiệm ngân sách."><InputNumber min={0} step={1000000} placeholder="Ví dụ: 150000000" style={{ width: "100%" }} /></Form.Item>
+        <Form.Item label="Mô tả hàng hóa / dịch vụ" name="description" rules={[{ required: true, message: "Nhập mô tả hàng hóa." }]}><Input placeholder="Ví dụ: Màn hình tương tác 24 inch" /></Form.Item>
+        <div className="pr-inline-fields">
+          <Form.Item label="Số lượng" name="quantity" rules={[{ required: true, message: "Nhập số lượng." }]}><InputNumber min={0.001} placeholder="10" style={{ width: "100%" }} /></Form.Item>
+          <Form.Item label="Đơn vị tính" name="unit" rules={[{ required: true, message: "Nhập đơn vị tính." }]}><Input placeholder="Ví dụ: cái, bộ, chiếc" /></Form.Item>
+        </div>
+        <Button block htmlType="submit" size="large" type="primary">{editing ? "Lưu thay đổi" : "Tạo yêu cầu mua hàng"}</Button>
       </Form>
     </Modal>
-    <Modal title={decision?.action === "approve" ? "Duyệt Purchase Request" : "Từ chối Purchase Request"} open={Boolean(decision)} footer={null} onCancel={() => setDecision(null)} destroyOnHidden>
+    <Modal title={decision?.action === "approve" ? "Phê duyệt yêu cầu mua hàng" : "Từ chối yêu cầu mua hàng"} open={Boolean(decision)} footer={null} onCancel={() => setDecision(null)} destroyOnHidden>
       <Form form={decisionForm} layout="vertical" onFinish={decide}>
         <p>{decision?.request.number} · {decision?.request.purpose}</p>
-        <Form.Item label={decision?.action === "approve" ? "Ghi chú (không bắt buộc)" : "Lý do từ chối"} name="reason" rules={decision?.action === "reject" ? [{ required: true, message: "Nhập lý do từ chối." }] : undefined}><Input.TextArea rows={4} /></Form.Item>
-        <Button block htmlType="submit" type="primary" danger={decision?.action === "reject"} loading={Boolean(actionLoading)}>{decision?.action === "approve" ? "Xác nhận duyệt" : "Xác nhận từ chối"}</Button>
+        <Form.Item label={decision?.action === "approve" ? "Ghi chú phê duyệt (không bắt buộc)" : "Lý do từ chối"} name="reason" rules={decision?.action === "reject" ? [{ required: true, message: "Nhập lý do từ chối." }] : undefined}><Input.TextArea rows={4} placeholder={decision?.action === "approve" ? "Nhập ghi chú nếu có..." : "Nêu rõ lý do từ chối để người đề nghị điều chỉnh..."} /></Form.Item>
+        <Button block htmlType="submit" size="large" type="primary" danger={decision?.action === "reject"} loading={Boolean(actionLoading)}>{decision?.action === "approve" ? "Xác nhận phê duyệt" : "Xác nhận từ chối"}</Button>
       </Form>
     </Modal>
   </AppShell>;
