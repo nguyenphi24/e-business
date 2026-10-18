@@ -64,6 +64,26 @@ Script kiểm tra Python và Node cài sẵn trên máy trước, không đủ p
 
 Không chạy sandbox-service thì để trống `SANDBOX_BASE_URL` trong `procurehub/.env`: hệ thống vẫn chạy, thanh toán dùng nút mô phỏng nội bộ, không có hóa đơn điện tử và ký số.
 
+## Demo qua domain: một image, một cổng
+
+Cách đơn giản nhất để mở demo cho người khác. Một image gồm nginx, giao diện (đã build sẵn), ProcureHub API, sandbox-service và PostgreSQL nhúng; chỉ lộ **một cổng (80)**. Giao diện gọi API cùng domain (`/api/v1`), trang thanh toán/ký số/tra cứu hóa đơn của sandbox cũng đi qua cùng domain.
+
+```bash
+docker build -t procurehub-demo .          # chạy ở thư mục gốc repo (cùng cấp Dockerfile)
+docker run -d --name procurehub --restart unless-stopped \
+  -p 8080:80 -v procurehub-data:/data \
+  -e PUBLIC_URL=https://demo.example.com \
+  procurehub-demo
+```
+
+- `PUBLIC_URL` là địa chỉ người dùng gõ trên trình duyệt (có `https://`, không có dấu `/` cuối). Từ đó image tự suy ra host được phép, CORS, địa chỉ quay về sau thanh toán. Thử trên máy: `-e PUBLIC_URL=http://localhost:8080`.
+- Trỏ domain: reverse proxy có HTTPS (Cloudflare Tunnel, Caddy, nginx…) chuyển `demo.example.com` → `host:8080`. Cookie đăng nhập có cờ `Secure`, nên khi dùng domain phải là HTTPS (riêng `localhost` thì được).
+- Lần chạy đầu tự tạo secret, DB, migrate và nạp dữ liệu demo (tài khoản ở bảng phía trên, mật khẩu `Demo@2026`). Mọi thứ nằm trong volume `/data`, khởi động lại không mất.
+- Làm mới dữ liệu trước buổi demo: `docker run ... -e RESET_DATA=1 ...` (hoặc `docker exec` rồi chạy `seed_demo --reset`).
+- Kiểm tra nhanh: `API_URL=https://demo.example.com WEB_URL=https://demo.example.com procurehub/scripts/smoke_demo.sh`.
+- Công khai ra Internet thì nhớ mật khẩu demo ai cũng biết; nên giới hạn truy cập ở proxy (Cloudflare Access/basic auth). PostgreSQL nhúng chỉ để demo; cần sao lưu thì sao chép volume.
+- Cách deploy nhiều image qua registry (`procurehub/build.sh`, `procurehub/deploy/`) vẫn giữ nguyên cho môi trường nghiêm túc hơn.
+
 ## Kiểm thử
 
 ```bash
