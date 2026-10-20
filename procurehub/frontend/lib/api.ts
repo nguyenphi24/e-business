@@ -203,6 +203,16 @@ export class ApiError extends Error {
 }
 
 async function fetchWithAuth<T>(path: string, options: RequestInit, allowRefresh: boolean): Promise<T> {
+  if (
+    !accessToken &&
+    allowRefresh &&
+    !path.startsWith("/auth/") &&
+    typeof window !== "undefined" &&
+    getStoredUser() !== null
+  ) {
+    await refreshAccessToken();
+  }
+
   const headers = new Headers(options.headers);
   headers.set("Content-Type", "application/json");
   if (accessToken) headers.set("Authorization", `Bearer ${accessToken}`);
@@ -227,7 +237,15 @@ let refreshInFlight: Promise<string | null> | null = null;
 function refreshAccessToken(): Promise<string | null> {
   refreshInFlight ??= fetch(`${API_URL}/auth/refresh`, { method: "POST", credentials: "include" })
     .then(async (refreshed) => {
-      if (!refreshed.ok) return null;
+      if (!refreshed.ok) {
+        if (refreshed.status === 401 || refreshed.status === 403) {
+          accessToken = null;
+          if (typeof window !== "undefined") {
+            window.localStorage.removeItem("procurehub_user");
+          }
+        }
+        return null;
+      }
       accessToken = ((await refreshed.json()) as { access: string }).access;
       return accessToken;
     })

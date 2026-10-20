@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import status
@@ -12,24 +14,43 @@ from apps.identity.serializers import UserMeSerializer
 from common.exceptions import DomainError
 
 
-def _cookie_options():
+def _is_https_request(request):
+    if request is None:
+        return False
+    if request.is_secure():
+        return True
+    forwarded_proto = request.headers.get("X-Forwarded-Proto", "")
+    return forwarded_proto.split(",")[0].strip().lower() == "https"
+
+
+def _cookie_options(request=None):
     return {
         "httponly": True,
-        "secure": settings.REFRESH_COOKIE_SECURE,
+        "secure": bool(settings.REFRESH_COOKIE_SECURE and _is_https_request(request)),
         "samesite": settings.REFRESH_COOKIE_SAMESITE,
         "max_age": int(settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds()),
         "path": "/api/v1/auth/",
     }
 
 
-def _set_refresh_cookie(response, token):
-    response.set_cookie(settings.REFRESH_COOKIE_NAME, str(token), **_cookie_options())
+def _set_refresh_cookie(response, token, request=None):
+    response.set_cookie(settings.REFRESH_COOKIE_NAME, str(token), **_cookie_options(request))
 
 
 def _check_origin(request):
     origin = request.headers.get("Origin")
-    if origin and origin not in settings.CORS_ALLOWED_ORIGINS:
-        raise DomainError("permission_denied", "Request origin is not allowed.", status_code=403)
+    if not origin:
+        return
+    if origin in settings.CORS_ALLOWED_ORIGINS:
+        return
+    parsed = urlparse(origin)
+    request_host = request.get_host()
+    # Cho phép request cùng host (same-origin qua nginx/reverse proxy, kể cả khi chạy trên cổng :8080)
+    if parsed.netloc and (parsed.netloc == request_host or parsed.hostname == request_host.split(":")[0]):
+        return
+    if parsed.hostname and ("*" in settings.ALLOWED_HOSTS or parsed.hostname in settings.ALLOWED_HOSTS):
+        return
+    raise DomainError("permission_denied", "Request origin is not allowed.", status_code=403)
 
 
 def _tokens_for_user(user):
@@ -57,7 +78,7 @@ class LoginView(APIView):
 
         refresh, access = _tokens_for_user(user)
         response = Response({"access": access, "user": UserMeSerializer(user).data})
-        _set_refresh_cookie(response, refresh)
+        _set_refresh_cookie(response, refresh, request)
         return response
 
 
@@ -83,7 +104,7 @@ class RefreshView(APIView):
         old_refresh.blacklist()
         refresh, access = _tokens_for_user(user)
         response = Response({"access": access, "user": UserMeSerializer(user).data})
-        _set_refresh_cookie(response, refresh)
+        _set_refresh_cookie(response, refresh, request)
         return response
 
 
